@@ -162,7 +162,7 @@ public class MotionSensor {
 	}
 
     public static float getPitch() {
-        Log.e("SENSOR","pitch: " + -(pitch - 180));
+        //Log.d("SENSOR","pitch: " + -(pitch - 180));
         return -(pitch - 180);
     }
 

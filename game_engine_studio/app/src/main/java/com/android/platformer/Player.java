@@ -14,31 +14,19 @@ import android.gameengine.icadroids.tiles.Tile;
 import android.graphics.Point;
 import android.util.Log;
 
-/**
- * Vis is the player object of the game. It swims through the game, eats
- * strawberries and avoids the monster (although right now, nothing bad happens
- * when the monster gets you, just i.b.)
- * 
- * @author Paul Bergervoet
- */
+
 public class Player extends MoveableGameObject implements ICollision
 {
 
-	/**
-	 * Reference to the game itself
-	 */
+	//Reference to the game itself
 	private Room myroom;
-	
-	/**
-	 * Total score from strawberries eaten
-	 */
+
+	// variables
 	private int score;
     private double playerGravity;
     private double playerFriction;
 
-	/**
-	 * Constructor of Vis
-	 */
+	// constructor
 	public Player(Room myroom)
 	{
 		this.myroom = myroom;
@@ -47,33 +35,28 @@ public class Player extends MoveableGameObject implements ICollision
         playerGravity = 0.5;
         playerFriction = 0.5;
 
+        setFriction(0.05);
+
 		score = 0;
 	}
 
-	/**
-	 * update 'Vis': handle collisions and input from buttons / motion sensor
-	 * 
-	 * @see android.gameengine.icadroids.objects.MoveableGameObject#update()
-	 */
-
-    private boolean placeFree(int x, int y){ // TODO: type blok afhankelijk maken van de player!!
-        // getX() + getFrameWidth()
-        // getY() + getFrameHeight()
+    // awesome home-made function that checks if a given position is collision free
+    // TODO: make tile type dependant on the player!
+    private boolean placeFree(int x, int y){
         Tile myTile = getTileOnPosition(x, y);
-
         if (myTile != null) {
-            Log.e("TILE", "" + myTile.getTileType());
-            if (myTile.getTileType() == 0) {
+            if (myTile.getTileType() == 0)
                 return false;
-            }
         }
         return true;
     }
 
+    // handle collisions and movement
 	@Override
 	public void update()
 	{
 		super.update();
+
 		// collisions with objects
 		ArrayList<GameObject> gebotst = getCollidedObjects();
 		if (gebotst != null)
@@ -91,87 +74,97 @@ public class Player extends MoveableGameObject implements ICollision
 //				}
 //			}
 		}
+
 		// Handle input. Both on screen buttons and tilting are supported.
 		// Buttons take precedence.
 		boolean buttonPressed = false;
 
-
-        //test gravity
-        if (placeFree(getX(), getY() + getFrameHeight() + (int)getySpeed()) &&
-              placeFree(getX() + getFrameWidth(), getY() + getFrameHeight() + (int)getySpeed())) {
+        //set gravity
+        if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
-        }
-//        else {
-//            if (getySpeed() > 0) {
-//                setySpeed(0);
-//                for (int i = 0; i <= getySpeed(); i++){
-//                    if (!placeFree(getX(), getY() + getFrameHeight() + (int)getySpeed()) ||
-//                            !placeFree(getX() + getFrameWidth(), getY() + getFrameHeight() + i)) {
-//                        setY(getY()+i);
-//                    }
-//                }
-//                //setY(Math.ceil(getY() * 12) / 12);
-//            }
-//        }
+            //Log.d("Gravity", "falling");
 
-        if (MotionSensor.getPitch() > 3 || MotionSensor.getPitch() < -3) {
-            setxSpeed(MotionSensor.getPitch() / 2);
+        } else {
+            setySpeed(0);
+            //Log.d("Gravity", "still");
         }
 
+        // moving left
+        if (MotionSensor.getPitch() < -3) {
+            if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)){
+                setxSpeed(MotionSensor.getPitch() / 3);
+            }
+        }
+
+        // moving right
+        if (MotionSensor.getPitch() > 3) {
+            if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)){
+                setxSpeed(MotionSensor.getPitch() / 3);
+            }
+        }
+
+        // jumping
         if (TouchInput.onPress) {
-            setySpeed(-8);
+            if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
+                setySpeed(-8);
+            }
         }
-		
-		// Example of how to use the touch screen: Vis swims towards touch location.
-		// To use this, comment out the input from OnScreenButtons and MotionSensor 
-		// and switch the use-settings in class Vissenkom
-		/*
-		 	// get readings from the TouchInput
-		 	float targetX = TouchInput.xPos;
-		 	float targetY = TouchInput.xPos;
-		 	// When using the viewport, translate screen locations to game world 
-		 	Point p = mygame.translateToGamePosition(targetX, targetY);
-		 	// Move in the direction of the point that has been touched
-			setSpeed(8);
-		 	moveTowardsAPoint(p.x, p.y);
-		*/ 
 	}
 
-	/**
-	 * Handle tile collisions: Vis bounces off tiles of type 1 only.
-	 * 
-	 * @see android.gameengine.icadroids.objects.collisions.ICollision#collisionOccurred(java.util.List)
-	 */
+    // handle tile collisions
+    // TODO: make tile type dependant on the player!
 	@Override
 	public void collisionOccurred(List<TileCollision> collidedTiles)
 	{
 		// Do we know for certain that the for-each loop goes through the list
 		// front to end?
 		// If not, we have to use a different iterator!
+        // ^ what the heck do you even mean by that?
 		for (TileCollision tc : collidedTiles)
 		{
 			if (tc.theTile.getTileType() == 0)
 			{
-				moveUpToTileSide(tc);
-				if (tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT) {
-                    setxSpeed(0);
-                }
-                if (tc.collisionSide == tc.BOTTOM || tc.collisionSide == tc.TOP) {
+                Log.d("Collision", "colliding");
+                moveUpToTileSide(tc);
+
+                // round x and y position to prevent getting stuck occasionally
+                setY(Math.round(getY()));
+                setX(Math.round(getX()));
+
+                // stop speeds
+                if ((tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM)) {
                     setySpeed(0);
                 }
-				return; // might be considered ugly by some colleagues...
+				if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
+                    setxSpeed(0);
+                }
+				return; // might be considered ugly by some colleagues... // I love it
 			}
 		}
 	}
 
-	/**
-	 * Get the score
-	 * 
-	 * @return current value of score
-	 */
+    // get player score
 	public int getScore()
 	{
 		return score;
 	}
 
 }
+
+
+
+
+// (taken out of update function)
+// Example of how to use the touch screen: Vis swims towards touch location.
+// To use this, comment out the input from OnScreenButtons and MotionSensor
+// and switch the use-settings in class Vissenkom
+		/*
+		 	// get readings from the TouchInput
+		 	float targetX = TouchInput.xPos;
+		 	float targetY = TouchInput.xPos;
+		 	// When using the viewport, translate screen locations to game world
+		 	Point p = mygame.translateToGamePosition(targetX, targetY);
+		 	// Move in the direction of the point that has been touched
+			setSpeed(8);
+		 	moveTowardsAPoint(p.x, p.y);
+		*/
