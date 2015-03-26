@@ -62,11 +62,11 @@ public class Player extends MoveableGameObject implements ICollision
 	@Override
 	public void update()
 	{
+        super.update();
+
         // round x and y position to prevent getting stuck occasionally
         setY(Math.round(getY()));
         setX(Math.round(getX()));
-
-		super.update();
 
 		// collisions with objects
 		ArrayList<GameObject> gebotst = getCollidedObjects();
@@ -91,33 +91,39 @@ public class Player extends MoveableGameObject implements ICollision
 		boolean buttonPressed = false;
 
         //set gravity
-        if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight()) && !isCollidingSurface) {
+        if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
             //Log.d("Gravity", "falling");
-
         } else {
             setySpeed(0);
+            setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
             //Log.d("Gravity", "still");
         }
 
         // moving left
-        if (MotionSensor.getPitch() < -SENSITIVITY) {
-            if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1) && !isCollidingSide){
+        if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)){
+            if (MotionSensor.getPitch() < -SENSITIVITY) {
                 setxSpeed(getxSpeed() + (MotionSensor.getPitch()+SENSITIVITY) / 20);
             }
+            // set horizontal friction
+            setxSpeed((1-playerFriction) * getxSpeed());
         }
 
         // moving right
-        if (MotionSensor.getPitch() > SENSITIVITY) {
-            if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1) && !isCollidingSide){
+        if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)){
+            if (MotionSensor.getPitch() > SENSITIVITY) {
                 setxSpeed(getxSpeed() + (MotionSensor.getPitch()-SENSITIVITY) / 20);
             }
+            // set horizontal friction
+            setxSpeed((1-playerFriction) * getxSpeed());
         }
 
         // jumping
-        if (TouchInput.onPress) {
-            if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && !isCollidingSurface) {
-                setySpeed(-8);
+        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
+            if (TouchInput.onPress) setySpeed(-8);
+        } else {
+            if (getySpeed() < 0) {
+                setySpeed(0);
             }
         }
 
@@ -132,15 +138,9 @@ public class Player extends MoveableGameObject implements ICollision
         if (getySpeed() >= MAXYSPEED){
             setySpeed(MAXYSPEED);
         }
-        if (getySpeed() <= -MAXYSPEED){
+        if (getySpeed() <= -MAXYSPEED) {
             setySpeed(-MAXYSPEED);
         }
-
-        // set horizontal friction
-        //setxSpeed((1-playerFriction) * getxSpeed());
-
-        isCollidingSide = false;
-        isCollidingSurface = false;
 
 	}
 
@@ -158,19 +158,18 @@ public class Player extends MoveableGameObject implements ICollision
 			if (tc.theTile.getTileType() == 0)
 			{
 
-                Log.d("Collision", "colliding" + tc.collisionSide);
+                Log.d("Collision", "colliding " + tc.collisionSide);
+
                 moveUpToTileSide(tc);
 
                 // stop speeds
                 if (tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
-                    //isCollidingSurface = true;
                 }
                 if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
                     setxSpeed(0);
-                    //isCollidingSide = true;
                 }
-				//return; // might be considered ugly by some colleagues... // I love it
+				return; // might be considered ugly by some colleagues... // I love it
 			}
 		}
 	}
