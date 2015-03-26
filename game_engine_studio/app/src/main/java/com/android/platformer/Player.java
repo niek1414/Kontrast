@@ -62,6 +62,9 @@ public class Player extends MoveableGameObject implements ICollision
 	@Override
 	public void update()
 	{
+        // round x and y position to prevent getting stuck occasionally
+        setY(Math.round(getY()));
+        setX(Math.round(getX()));
 
 		super.update();
 
@@ -139,9 +142,6 @@ public class Player extends MoveableGameObject implements ICollision
         isCollidingSide = false;
         isCollidingSurface = false;
 
-        // round x and y position to prevent getting stuck occasionally
-        setY(Math.round(getY()));
-        setX(Math.round(getX()));
 	}
 
     // handle tile collisions
@@ -164,11 +164,11 @@ public class Player extends MoveableGameObject implements ICollision
                 // stop speeds
                 if (tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
-                    isCollidingSurface = true;
+                    //isCollidingSurface = true;
                 }
                 if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
                     setxSpeed(0);
-                    isCollidingSide = true;
+                    //isCollidingSide = true;
                 }
 				//return; // might be considered ugly by some colleagues... // I love it
 			}
