@@ -25,6 +25,11 @@ public class Player extends MoveableGameObject implements ICollision
 	private int score;
     private double playerGravity;
     private double playerFriction;
+    private final int MAXXSPEED;
+    private final int MAXYSPEED;
+    private final int SENSITIVITY;
+    private boolean isCollidingSide;
+    private boolean isCollidingSurface;
 
 	// constructor
 	public Player(Room myroom)
@@ -33,9 +38,11 @@ public class Player extends MoveableGameObject implements ICollision
 		
 		setSprite("player_12", 1);
         playerGravity = 0.5;
-        playerFriction = 0.5;
+        playerFriction = 0.1;
 
-        setFriction(0.05);
+        MAXXSPEED = 8;
+        MAXYSPEED = 8;
+        SENSITIVITY = 5;
 
 		score = 0;
 	}
@@ -55,6 +62,7 @@ public class Player extends MoveableGameObject implements ICollision
 	@Override
 	public void update()
 	{
+
 		super.update();
 
 		// collisions with objects
@@ -80,7 +88,7 @@ public class Player extends MoveableGameObject implements ICollision
 		boolean buttonPressed = false;
 
         //set gravity
-        if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
+        if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight()) && !isCollidingSurface) {
             setySpeed(getySpeed() + playerGravity);
             //Log.d("Gravity", "falling");
 
@@ -90,25 +98,50 @@ public class Player extends MoveableGameObject implements ICollision
         }
 
         // moving left
-        if (MotionSensor.getPitch() < -3) {
-            if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)){
-                setxSpeed(MotionSensor.getPitch() / 3);
+        if (MotionSensor.getPitch() < -SENSITIVITY) {
+            if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1) && !isCollidingSide){
+                setxSpeed(getxSpeed() + (MotionSensor.getPitch()+SENSITIVITY) / 20);
             }
         }
 
         // moving right
-        if (MotionSensor.getPitch() > 3) {
-            if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)){
-                setxSpeed(MotionSensor.getPitch() / 3);
+        if (MotionSensor.getPitch() > SENSITIVITY) {
+            if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1) && !isCollidingSide){
+                setxSpeed(getxSpeed() + (MotionSensor.getPitch()-SENSITIVITY) / 20);
             }
         }
 
         // jumping
         if (TouchInput.onPress) {
-            if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
+            if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && !isCollidingSurface) {
                 setySpeed(-8);
             }
         }
+
+        // limit to max speed
+        if (getxSpeed() >= MAXXSPEED){
+            setxSpeed(MAXXSPEED);
+        }
+        if (getxSpeed() <= -MAXXSPEED){
+            setxSpeed(-MAXXSPEED);
+        }
+
+        if (getySpeed() >= MAXYSPEED){
+            setySpeed(MAXYSPEED);
+        }
+        if (getySpeed() <= -MAXYSPEED){
+            setySpeed(-MAXYSPEED);
+        }
+
+        // set horizontal friction
+        //setxSpeed((1-playerFriction) * getxSpeed());
+
+        isCollidingSide = false;
+        isCollidingSurface = false;
+
+        // round x and y position to prevent getting stuck occasionally
+        setY(Math.round(getY()));
+        setX(Math.round(getX()));
 	}
 
     // handle tile collisions
@@ -124,21 +157,20 @@ public class Player extends MoveableGameObject implements ICollision
 		{
 			if (tc.theTile.getTileType() == 0)
 			{
-                Log.d("Collision", "colliding");
+
+                Log.d("Collision", "colliding" + tc.collisionSide);
                 moveUpToTileSide(tc);
 
-                // round x and y position to prevent getting stuck occasionally
-                setY(Math.round(getY()));
-                setX(Math.round(getX()));
-
                 // stop speeds
-                if ((tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM)) {
+                if (tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
+                    isCollidingSurface = true;
                 }
-				if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
+                if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
                     setxSpeed(0);
+                    isCollidingSide = true;
                 }
-				return; // might be considered ugly by some colleagues... // I love it
+				//return; // might be considered ugly by some colleagues... // I love it
 			}
 		}
 	}
