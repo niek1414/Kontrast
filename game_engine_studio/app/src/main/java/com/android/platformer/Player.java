@@ -45,7 +45,7 @@ public class Player extends MoveableGameObject implements ICollision
         MAXXSPEED = 8;
         MAXYSPEED = 8;
         SENSITIVITY = 5;
-        BOUNCEFRICTION = 0.5f;
+        BOUNCEFRICTION = 1;
 
 		score = 0;
 	}
@@ -62,12 +62,13 @@ public class Player extends MoveableGameObject implements ICollision
     }
 
     private void doBounce() {
-        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)){
+        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && getySpeed() > 3){
             setySpeed(-getySpeed() + BOUNCEFRICTION);
             Log.d("Collision", "bounce");
-        }
-        else {
+        } else {
+            //Log.d("Collision", "no bounce");
             setySpeed(0);
+            setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
         }
     }
 
@@ -108,17 +109,12 @@ public class Player extends MoveableGameObject implements ICollision
             setySpeed(getySpeed() + playerGravity);
             //Log.d("Gravity", "falling");
         } else {
-            if (getySpeed() < 1){
-                //setySpeed(0);
-                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
-                //Log.d("Gravity", "still");
-            } else {
-                doBounce();
-            }
+            doBounce();
 
             if (TouchInput.onPress) {
-                if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1))
-                    {setySpeed(-8);}
+                if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
+                    setySpeed(-8);
+                }
             }
         }
 
@@ -140,12 +136,14 @@ public class Player extends MoveableGameObject implements ICollision
             setxSpeed((1-playerFriction) * getxSpeed());
         }
 
-        if (!placeFree(getX(), getY() - 1) && !placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
-            if (getySpeed() < 0) {
-                setySpeed(0);
-                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
-            }
-        }
+//        //ceiling collision
+//        if (getySpeed() < 0) {
+//            if (!placeFree(getX(), getY() - (int)getySpeed()) && !placeFree(getX() + getFrameWidth() - 1, getY() - (int)getySpeed())) {
+//                Log.d("Collision", "ceiling");
+//                setySpeed(0);
+//                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
+//            }
+//        }
 
         // limit to max speed
         if (getxSpeed() >= MAXXSPEED){
@@ -162,13 +160,15 @@ public class Player extends MoveableGameObject implements ICollision
             setySpeed(-MAXYSPEED);
         }
 
+        //animations
         if (getX() != getPrevX()) {
             setAnimationSpeed(MAXXSPEED - Math.abs((int) getxSpeed()));
 //            Log.d("ANIMATION", "aniSpeed: " + (MAXXSPEED - Math.abs((int) getxSpeed())));
         } else {
             setAnimationSpeed(-1);
         }
-        Log.d("Speed", "Y: " + getySpeed());
+
+        //Log.d("Speed", "Y: " + getySpeed());
 
 	}
 
@@ -192,11 +192,7 @@ public class Player extends MoveableGameObject implements ICollision
 
                 // stop speeds
                 if (tc.collisionSide == tc.TOP) {
-                    if (getySpeed() < 1){
-                        setySpeed(0);
-                    } else {
-                        doBounce();
-                    }
+                    //doBounce();
                 }
                 else if (tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
