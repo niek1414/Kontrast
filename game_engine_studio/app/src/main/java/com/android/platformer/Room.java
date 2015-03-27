@@ -47,7 +47,7 @@ public class Room extends GameEngine {
 		createTileEnvironment();
 
 		player = new Player(this);
-		addGameObject(player, 84, 0);
+		addGameObject(player, 84, 48);
 		
 		// Example of how to use the Viewport, properties and zooming
 

@@ -28,21 +28,24 @@ public class Player extends MoveableGameObject implements ICollision
     private final int MAXXSPEED;
     private final int MAXYSPEED;
     private final int SENSITIVITY;
-    private boolean isCollidingSide;
-    private boolean isCollidingSurface;
+    private final float BOUNCEFRICTION;
 
 	// constructor
 	public Player(Room myroom)
 	{
 		this.myroom = myroom;
-		
-		setSprite("player_12", 1);
+
+		setSprite("player_12", 5);
         playerGravity = 0.5;
         playerFriction = 0.1;
+
+        startAnimate();
+        setAnimationSpeed(0);
 
         MAXXSPEED = 8;
         MAXYSPEED = 8;
         SENSITIVITY = 5;
+        BOUNCEFRICTION = 0.5f;
 
 		score = 0;
 	}
@@ -56,6 +59,16 @@ public class Player extends MoveableGameObject implements ICollision
                 return false;
         }
         return true;
+    }
+
+    private void doBounce() {
+        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)){
+            setySpeed(-getySpeed() + BOUNCEFRICTION);
+            Log.d("Collision", "bounce");
+        }
+        else {
+            setySpeed(0);
+        }
     }
 
     // handle collisions and movement
@@ -88,16 +101,25 @@ public class Player extends MoveableGameObject implements ICollision
 
 		// Handle input. Both on screen buttons and tilting are supported.
 		// Buttons take precedence.
-		boolean buttonPressed = false;
+		//boolean buttonPressed = false;
 
         //set gravity
         if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
             //Log.d("Gravity", "falling");
         } else {
-            setySpeed(0);
-            setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
-            //Log.d("Gravity", "still");
+            if (getySpeed() < 1){
+                //setySpeed(0);
+                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
+                //Log.d("Gravity", "still");
+            } else {
+                doBounce();
+            }
+
+            if (TouchInput.onPress) {
+                if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1))
+                    {setySpeed(-8);}
+            }
         }
 
         // moving left
@@ -118,12 +140,10 @@ public class Player extends MoveableGameObject implements ICollision
             setxSpeed((1-playerFriction) * getxSpeed());
         }
 
-        // jumping
-        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
-            if (TouchInput.onPress) setySpeed(-8);
-        } else {
+        if (!placeFree(getX(), getY() - 1) && !placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
             if (getySpeed() < 0) {
                 setySpeed(0);
+                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
             }
         }
 
@@ -141,6 +161,14 @@ public class Player extends MoveableGameObject implements ICollision
         if (getySpeed() <= -MAXYSPEED) {
             setySpeed(-MAXYSPEED);
         }
+
+        if (getX() != getPrevX()) {
+            setAnimationSpeed(MAXXSPEED - Math.abs((int) getxSpeed()));
+//            Log.d("ANIMATION", "aniSpeed: " + (MAXXSPEED - Math.abs((int) getxSpeed())));
+        } else {
+            setAnimationSpeed(-1);
+        }
+        Log.d("Speed", "Y: " + getySpeed());
 
 	}
 
@@ -163,10 +191,17 @@ public class Player extends MoveableGameObject implements ICollision
                 moveUpToTileSide(tc);
 
                 // stop speeds
-                if (tc.collisionSide == tc.TOP || tc.collisionSide == tc.BOTTOM) {
+                if (tc.collisionSide == tc.TOP) {
+                    if (getySpeed() < 1){
+                        setySpeed(0);
+                    } else {
+                        doBounce();
+                    }
+                }
+                else if (tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
                 }
-                if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
+                else if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
                     setxSpeed(0);
                 }
 				return; // might be considered ugly by some colleagues... // I love it
