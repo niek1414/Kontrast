@@ -75,8 +75,8 @@ public class TouchInput implements OnTouchListener {
 	/** the number of touches in this multiple touch event */
 	public static int fingerCount;
 
-	private float oldDistance = 0f;
-	private float newDistance = 0f;
+	public static float oldDistance = 0f;
+	public static float newDistance = 0f;
 	private boolean zoomCheck;
 	
 	public TouchInput()

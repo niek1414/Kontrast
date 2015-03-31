@@ -11,28 +11,14 @@ import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 
-/**
- * Main class of the game 'Vissenkom'.
- * 
- * @author Paul Bergervoet
- */
 public class Room extends GameEngine {
 
-	/**
-	 * MoveableGmeObject vis, player in the game
-	 */
 	private Player player;
-	
-	/**
-	 * Dashboard for displaying the score
-	 */
+    private Player player2;
+    private Player player3;
 	private DashboardTextView scoreDisplay;
-	
-	/**
-	 * Initialize the game, create objects and level
-	 * 
-	 * @see android.gameengine.icadroids.engine.GameEngine#initialize()
-	 */
+    private long roomTimer;
+    private long previousTimeMillis;
 
     public float roomPosition;
 
@@ -44,10 +30,16 @@ public class Room extends GameEngine {
 		MotionSensor.use = true;
 		OnScreenButtons.use = false;
 
+        previousTimeMillis = System.currentTimeMillis();
+
 		createTileEnvironment();
 
-		player = new Player(this);
+		player = new PlayerDefault(this);
+        player2 = new PlayerLaunch(this);
+        player3 = new PlayerHold(this);
 		addGameObject(player, 84, 48);
+        addGameObject(player2, 100, 68);
+        addGameObject(player3, 60, 68);
 		
 		// Example of how to use the Viewport, properties and zooming
 
@@ -55,9 +47,9 @@ public class Room extends GameEngine {
 			Viewport.useViewport = true;
 			// Zoom in, 2x
 			setZoomFactor(getScreenHeight() / 240);
-			// Make viewport follow the Vis
+			// Make viewport follow the player
 			setPlayer(player);
-			// Vis will be center screen
+			// player will not be center screen
 			setPlayerPositionOnScreen(Viewport.PLAYER_BOTTOM, Viewport.PLAYER_CENTER);
 			// Determines how quickly viewport moves (see API for details)
 			setPlayerPositionTolerance(0.8, 0.5);
@@ -82,7 +74,7 @@ public class Room extends GameEngine {
 	private void createDashboard(){
 		
 		//this.scoreDisplay.setWidgetWidth(20);
-		this.scoreDisplay.setWidgetHeight(60);
+		this.scoreDisplay.setWidgetHeight((int)(getScreenHeight() * 0.125));
 		this.scoreDisplay.setWidgetBackgroundColor(Color.WHITE);
 		this.scoreDisplay.setWidgetX(10);
 		this.scoreDisplay.setWidgetY(10);
@@ -136,7 +128,7 @@ public class Room extends GameEngine {
                 { 0,-1, 0,-1,-1, 0,-1, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0,-1, 0,-1,-1, 0,-1, 0, 0,-1, 0,-1, 0, 0,-1,-1,-1, 0,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0,-1, 0,-1,-1,-1,-1,-1, 0, 0,-1, 0,-1, 0, 0,-1,-1,-1,-1, 0,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0,-1,-1,-1, 0,-1,-1,-1, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0,-1,-1,-1, 0,-1,-1,-1, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0,-1,-1, 0,-1, 0,-1,-1, 0, 0,-1, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0,-1,-1, 0,-1, 0,-1,-1, 0, 0,-1, 0,-1, 0, 0,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0,-1,-1,-1, 0,-1,-1,-1, 0, 0,-1, 0,-1,-1,-1,-1,-1, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -159,7 +151,8 @@ public class Room extends GameEngine {
 	@Override
 	public void update() {
 		super.update();
+        roomTimer = (System.currentTimeMillis() - previousTimeMillis) / 1000;
 		this.scoreDisplay.setTextString(
-				"Score: " + String.valueOf(this.player.getScore()));
+				"Time: " + String.valueOf(this.roomTimer));
 	}
 }

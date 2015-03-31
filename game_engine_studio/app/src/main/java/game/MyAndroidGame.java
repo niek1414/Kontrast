@@ -21,14 +21,9 @@ public class MyAndroidGame extends GameEngine {
 @Override
 protected void initialize() {
 	//put your initialization code here
-	
-	//////////////////////////////////////////////////
-	//These 2 lines will start vissenkom as example.//
-	//       Delete when creating own game!         //
-	//////////////////////////////////////////////////
+
 	Intent intent = new Intent(this, Room.class);
 	startActivity(intent);
-	////////////////////////////////////////////////////
 }
 
 @Override
