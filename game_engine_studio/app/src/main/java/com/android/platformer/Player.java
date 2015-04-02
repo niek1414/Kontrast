@@ -15,8 +15,15 @@ import android.graphics.Point;
 import android.util.Log;
 
 
-public class Player extends MoveableGameObject implements ICollision
+public abstract class Player extends MoveableGameObject implements ICollision
 {
+
+    private enum Color{
+        BLACK, WHITE
+    }
+
+    private Color playerType = Color.BLACK;
+    private int solidTile = 0;
 
 	//Reference to the game itself
     protected Room myroom;
@@ -24,10 +31,13 @@ public class Player extends MoveableGameObject implements ICollision
 	// variables
     protected double playerGravity;
     protected double playerFriction;
-    protected final int MAXXSPEED = 8;
-    protected final int MAXYSPEED = 8;
-    protected final int SENSITIVITY = 5;
-    protected final float BOUNCEFRICTION = 1;
+    protected int MAXXSPEED;
+    protected int MAXYSPEED;
+    protected int THRESHOLD;
+    protected int SENSITIVITY;
+    protected float BOUNCEFRICTION;
+
+    protected boolean allowMovement = true;
 
 
 //    Default constructor
@@ -44,7 +54,7 @@ public class Player extends MoveableGameObject implements ICollision
 //
 //        MAXXSPEED = 8;
 //        MAXYSPEED = 8;
-//        SENSITIVITY = 5;
+//        THRESHOLD = 5;
 //        BOUNCEFRICTION = 1;
 //
 //    }
@@ -145,10 +155,11 @@ public class Player extends MoveableGameObject implements ICollision
 
     protected void checkMoveLeft() {
         // moving left
-        if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)) {
-            if (MotionSensor.getPitch() < -SENSITIVITY) {
-                setxSpeed(getxSpeed() + (MotionSensor.getPitch() + SENSITIVITY) / 20);
+        if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1) && allowMovement) {
+            if (MotionSensor.getPitch() < -THRESHOLD) {
+                setxSpeed(getxSpeed() + (MotionSensor.getPitch() + THRESHOLD) / SENSITIVITY);
             }
+
             // set horizontal friction
             setxSpeed((1 - playerFriction) * getxSpeed());
         }
@@ -156,10 +167,11 @@ public class Player extends MoveableGameObject implements ICollision
 
     protected void checkMoveRight() {
         // moving right
-        if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)) {
-            if (MotionSensor.getPitch() > SENSITIVITY) {
-                setxSpeed(getxSpeed() + (MotionSensor.getPitch() - SENSITIVITY) / 20);
+        if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1) && allowMovement) {
+            if (MotionSensor.getPitch() > THRESHOLD) {
+                setxSpeed(getxSpeed() + (MotionSensor.getPitch() - THRESHOLD) / SENSITIVITY);
             }
+
             // set horizontal friction
             setxSpeed((1 - playerFriction) * getxSpeed());
         }
@@ -213,7 +225,17 @@ public class Player extends MoveableGameObject implements ICollision
                 } else if (tc.collisionSide == tc.BOTTOM) {
                     setySpeed(0);
                 } else if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
-                    setxSpeed(0);
+                    if (Math.abs(getxSpeed()) < 4){
+                        setxSpeed(0);
+                    } else {
+                        if (getxSpeed() > 4 && placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)) {
+                            setxSpeed(-getxSpeed());
+                        } else if (getxSpeed() < -4 && placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)) {
+                            setxSpeed(-getxSpeed());
+                        } else {
+                            setxSpeed(0);
+                        }
+                    }
                 }
                 return; // might be considered ugly by some colleagues... // I love it
             }

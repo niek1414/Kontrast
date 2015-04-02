@@ -17,9 +17,15 @@ public class PlayerLaunch extends Player{
 
         this.myroom = myroom;
 
-        setSprite("player_12", 5);
+        setSprite("player_launch", 3);
         playerGravity = 0.5;
         playerFriction = 0.1;
+
+        MAXXSPEED = 8;
+        MAXYSPEED = 10;
+        SENSITIVITY = 15;
+        THRESHOLD = 5;
+        BOUNCEFRICTION = 5;
 
         startAnimate();
         setAnimationSpeed(0);

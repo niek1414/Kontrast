@@ -110,6 +110,8 @@ public class AnimatedSprite extends Sprite {
 		}
 	}
 
+
+
 	/**
 	 * Initialize the sprite image.
 	 * <br />

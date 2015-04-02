@@ -201,6 +201,12 @@ public class GameObject {
 		sprite.loadAnimatedSprite(resourceName, numberOfFrames);
 	}
 
+//    public final void setSpriteScale(int newWidth, int newHeight, int numberOfFrames){
+//        sprite.setSprite(sprite.setSpriteScale(newWidth, newHeight));
+//        sprite.setFrameNumber(numberOfFrames);
+//    }
+
+
 	/**
 	 * Set a sprite for the GameObject. Use this method if you create
 	 * sprites yourself, for instance if you create subclasses of

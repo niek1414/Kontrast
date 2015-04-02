@@ -6,6 +6,7 @@ import android.gameengine.icadroids.engine.GameEngine;
 import android.gameengine.icadroids.engine.GameView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 /**
  * Sprite holds and handles correct loading of images (bitmaps), and includes
@@ -134,6 +135,22 @@ public class Sprite {
 	public final Bitmap getSprite() {
 		return spriteBitmap;
 	}
+
+//    public final Bitmap setSpriteScale(int newWidth, int newHeight) {
+//        Bitmap bm = getSprite();
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//        float scaleWidth = ((float) newWidth) / width;
+//        float scaleHeight = ((float) newHeight) / height;
+//        // CREATE A MATRIX FOR THE MANIPULATION
+//        Matrix matrix = new Matrix();
+//        // RESIZE THE BIT MAP
+//        matrix.postScale(scaleWidth, scaleHeight);
+//
+//        // "RECREATE" THE NEW BITMAP
+//        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height , matrix, true);
+//        return resizedBitmap;
+//    }
 
 	/**
 	 * Get the width of the sprite

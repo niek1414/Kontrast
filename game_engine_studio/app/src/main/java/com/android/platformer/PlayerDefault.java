@@ -9,9 +9,15 @@ public class PlayerDefault extends Player{
 
         this.myroom = myroom;
 
-        setSprite("player_12", 5);
+        setSprite("player_default", 5);
         playerGravity = 0.5;
         playerFriction = 0.1;
+
+        MAXXSPEED = 6;
+        MAXYSPEED = 8;
+        SENSITIVITY = 20;
+        THRESHOLD = 5;
+        BOUNCEFRICTION = 2;
 
         startAnimate();
         setAnimationSpeed(0);

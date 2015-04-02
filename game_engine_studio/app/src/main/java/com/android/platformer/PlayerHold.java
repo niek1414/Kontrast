@@ -17,12 +17,15 @@ public class PlayerHold extends Player{
 
         this.myroom = myroom;
 
-        setSprite("player_12", 5);
+        setSprite("player_hold", 10);
         playerGravity = 0.5;
         playerFriction = 0.1;
 
-        startAnimate();
-        setAnimationSpeed(0);
+        MAXXSPEED = 6;
+        MAXYSPEED = 9;
+        SENSITIVITY = 20;
+        THRESHOLD = 5;
+        BOUNCEFRICTION = 2;
 
         reset = true;
         oldVal = 0f;
@@ -40,26 +43,39 @@ public class PlayerHold extends Player{
             doBounce();
 
             if (TouchInput.onPress) {
-                if (reset == true){
+                if (reset == true && getySpeed() == 0){
                     startTime = System.currentTimeMillis();
                     reset = false;
                     afterRelease = true;
                     Log.e("HI", "RESETTTTTTTTTTTTTTTTT");
+                    allowMovement = false;
+                    setxSpeed(0);
+                }
+                if (afterRelease == true){
+                    int scale = (int) (-((startTime - System.currentTimeMillis()) / 100));
+
+                    if (scale > 0 && scale < 10) {
+                        setFrameNumber(scale);
+                    }
                 }
 
             } else if (afterRelease == true && TouchInput.onRelease){
                 Log.e("HI", "UUUUUUUUUUUUUUUUUUUUUUUUU");
                 reset = true;
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
-                    float jumpHeight = ((startTime - System.currentTimeMillis()));
+                    float jumpHeight = ((startTime - System.currentTimeMillis()) / 100);
                     setySpeed(jumpHeight);
                     Log.e("HI", "Hold: " + jumpHeight);
                     Log.e("HI", "S: " + startTime);
                     Log.e("HI", "C: " + System.currentTimeMillis());
-                    afterRelease = false;
                 }
+                afterRelease = false;
+                allowMovement = true;
+                setFrameNumber(0);
             }
         }
     }
 
+    @Override
+    protected void setPlayerAnimation() {}
 }
