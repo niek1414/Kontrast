@@ -8,7 +8,7 @@
 
     <!-- DPAD placement  -->
     
-        <android.gameengine.icadroids.input.OnScreenButton
+        <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/dpadCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
 		android:layout_above="@+id/dpadDown"
         android:src="@drawable/dpad_center" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/dpadLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="10dp"
          />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/dpadDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
          />
 
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/dpadRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_toRightOf="@+id/dpadCenter"
         android:src="@drawable/dpad_right" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/dpadUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:src="@drawable/dpad_up" />
         
     <!-- Button placement  -->
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/buttona" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         android:layout_toLeftOf="@+id/buttonA"
         android:src="@drawable/buttonb" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
         android:layout_toLeftOf="@+id/buttonA"
         android:src="@drawable/buttony" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         android:src="@drawable/buttonx"
         android:color="#66FF0000" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
         android:layout_toLeftOf="@+id/buttonStart"
         android:src="@drawable/select" />
 
-    <android.gameengine.icadroids.input.OnScreenButton
+    <android.gameengine.kontrast.input.OnScreenButton
         android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,4 +109,4 @@
         android:src="@drawable/start" />
 
 </RelativeLayout>
-<!-- From: file:/C:/Users/Erwin/Documents/GitHub/Kontrast/game_engine_studio/app/src/main/res/layout/onscreenbuttons.xml -->
+<!-- From: file:/C:/Users/NK/Documents/GitHub/Kontrast/game_engine_studio/app/src/main/res/layout/onscreenbuttons.xml -->

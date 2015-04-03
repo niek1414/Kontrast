@@ -1,6 +1,6 @@
 package com.android.platformer;
 
-import android.gameengine.icadroids.input.TouchInput;
+import android.gameengine.kontrast.input.TouchInput;
 import android.util.Log;
 
 /**

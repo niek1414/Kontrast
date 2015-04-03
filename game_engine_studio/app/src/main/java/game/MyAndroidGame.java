@@ -13,7 +13,7 @@ package game;
 import com.android.platformer.Room;
 
 import android.content.Intent;
-import android.gameengine.icadroids.engine.GameEngine;
+import android.gameengine.kontrast.engine.GameEngine;
 
 
 public class MyAndroidGame extends GameEngine {

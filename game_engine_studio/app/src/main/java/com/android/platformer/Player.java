@@ -3,15 +3,13 @@ package com.android.platformer;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.gameengine.icadroids.input.MotionSensor;
-import android.gameengine.icadroids.input.OnScreenButtons;
-import android.gameengine.icadroids.input.TouchInput;
-import android.gameengine.icadroids.objects.GameObject;
-import android.gameengine.icadroids.objects.MoveableGameObject;
-import android.gameengine.icadroids.objects.collisions.ICollision;
-import android.gameengine.icadroids.objects.collisions.TileCollision;
-import android.gameengine.icadroids.tiles.Tile;
-import android.graphics.Point;
+import android.gameengine.kontrast.input.MotionSensor;
+import android.gameengine.kontrast.input.TouchInput;
+import android.gameengine.kontrast.objects.GameObject;
+import android.gameengine.kontrast.objects.MoveableGameObject;
+import android.gameengine.kontrast.objects.collisions.ICollision;
+import android.gameengine.kontrast.objects.collisions.TileCollision;
+import android.gameengine.kontrast.tiles.Tile;
 import android.util.Log;
 
 
@@ -68,7 +66,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected boolean placeFree(int x, int y){
         Tile myTile = getTileOnPosition(x, y);
         if (myTile != null) {
-            if (myTile.getTileType() == solidTile)
+            if (myTile.getTileType() == solidTile || myTile.getTileType() == 3)
                 return false;
         }
         return true;
@@ -79,7 +77,22 @@ public abstract class Player extends MoveableGameObject implements ICollision
         if (myTile != null) {
             if (myTile.getTileType() == 2) {
                 // remove grey tile
-                myTile.setTileType(solidTile);
+                Tile adjacentTiles[] = {
+                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() + 1),
+                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY() + 1),
+                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() + 1),
+                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY()    ),
+                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY()    ),
+                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY()    ),
+                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() - 1),
+                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY() - 1),
+                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() - 1)
+                };
+
+                for (int i = 0; i < adjacentTiles.length; i++){
+                    adjacentTiles[i].setTileType(solidTile);
+                }
+
                 // change player
                 if (playerType == Color.BLACK) {
                     playerType = Color.WHITE;
@@ -246,7 +259,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // If not, we have to use a different iterator!
         // ^ what the heck do you even mean by that?
         for (TileCollision tc : collidedTiles) {
-            if (tc.theTile.getTileType() == solidTile) {
+            if (tc.theTile.getTileType() == solidTile || tc.theTile.getTileType() == 3) {
 
                 Log.d("Collision", "colliding " + tc.collisionSide);
 

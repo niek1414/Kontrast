@@ -1,10 +1,5 @@
 package com.android.platformer;
 
-import android.gameengine.icadroids.objects.collisions.TileCollision;
-import android.util.Log;
-
-import java.util.List;
-
 /**
  * Created by NK on 31-3-2015.
  */
