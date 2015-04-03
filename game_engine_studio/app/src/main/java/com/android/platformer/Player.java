@@ -77,21 +77,9 @@ public abstract class Player extends MoveableGameObject implements ICollision
         if (myTile != null) {
             if (myTile.getTileType() == 2) {
                 // remove grey tile
-                Tile adjacentTiles[] = {
-                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() + 1),
-                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY() + 1),
-                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() + 1),
-                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY()    ),
-                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY()    ),
-                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY()    ),
-                        getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() - 1),
-                        getTileOnIndex(myTile.getTileNumberX()    , myTile.getTileNumberY() - 1),
-                        getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() - 1)
-                };
+                Tile adjacentTiles[] = getAdjacentTiles(myTile);
 
-                for (int i = 0; i < adjacentTiles.length; i++){
-                    adjacentTiles[i].setTileType(solidTile);
-                }
+                flipTiles(adjacentTiles);
 
                 // change player
                 if (playerType == Color.BLACK) {
@@ -108,6 +96,30 @@ public abstract class Player extends MoveableGameObject implements ICollision
                     solidTile = 0;
                 }
 
+            }
+        }
+    }
+
+    protected Tile[] getAdjacentTiles(Tile myTile){
+        Tile adjacentTiles[] = {
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() - 1),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() - 1),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() - 1)
+        };
+        return adjacentTiles;
+    }
+
+    protected void flipTiles(Tile adjacentTiles[]){
+        for (int i = 0; i < adjacentTiles.length; i++) {
+            if (adjacentTiles[i].getTileType() == 2) {
+                adjacentTiles[i].setTileType(solidTile);
+                flipTiles(getAdjacentTiles(adjacentTiles[i]));
             }
         }
     }
