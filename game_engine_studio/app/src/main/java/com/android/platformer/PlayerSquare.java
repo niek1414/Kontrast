@@ -18,7 +18,7 @@ public class PlayerSquare extends Player{
         spriteBlack = "block_black";
         spriteFrames = 1;
 
-        setSprite(spriteWhite, spriteFrames);
+        setSprite(spriteBlack, spriteFrames);
         playerGravity = 0.5;
 
         MAXXSPEED = 4;

@@ -13,10 +13,10 @@ import android.util.TypedValue;
 
 public class Room extends GameEngine {
 
-	private Player player;
-    private Player player2;
+	//private Player player;
+    //private Player player2;
     private Player player3;
-    private Player player4;
+    //private Player player4;
 	private DashboardTextView scoreDisplay;
     private long roomTimer;
     private long previousTimeMillis;
@@ -35,14 +35,14 @@ public class Room extends GameEngine {
 
 		createTileEnvironment();
 
-		player = new PlayerDefault(this);
-        player2 = new PlayerLaunch(this);
+		//player = new PlayerDefault(this);
+        //player2 = new PlayerLaunch(this);
         player3 = new PlayerHold(this);
-        player4 = new PlayerSquare(this);
-		addGameObject(player, 84, 48);
-        addGameObject(player2, 100, 68);
+        //player4 = new PlayerSquare(this);
+		//addGameObject(player, 84, 48);
+        //addGameObject(player2, 100, 68);
         addGameObject(player3, 60, 68);
-        addGameObject(player4, 40, 68);
+        //addGameObject(player4, 40, 68);
 		
 		// Example of how to use the Viewport, properties and zooming
 
@@ -51,7 +51,7 @@ public class Room extends GameEngine {
 			// Zoom in, 2x
 			setZoomFactor(getScreenHeight() / 240);
 			// Make viewport follow the player
-			setPlayer(player);
+			setPlayer(player3);
 			// player will not be center screen
 			setPlayerPositionOnScreen(Viewport.PLAYER_BOTTOM, Viewport.PLAYER_CENTER);
 			// Determines how quickly viewport moves (see API for details)

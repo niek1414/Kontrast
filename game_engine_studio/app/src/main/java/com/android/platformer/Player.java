@@ -75,7 +75,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
     }
 
     protected void inGrey(){
-        Tile myTile = getTileOnPosition(getX() + 4, getY() + 4);
+        Tile myTile = getTileOnPosition(getX() + (getFrameWidth() / 2), getY() + (getFrameHeight() / 2));
         if (myTile != null) {
             if (myTile.getTileType() == 2) {
                 // remove grey tile
@@ -119,6 +119,9 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // round x and y position to prevent getting stuck occasionally
         setY(Math.round(getY()));
         setX(Math.round(getX()));
+
+        //setySpeed(Math.round(getySpeed()));
+        //setxSpeed(Math.round(getxSpeed()));
 
         checkCollisions();
 
