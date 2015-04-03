@@ -17,7 +17,11 @@ public class PlayerLaunch extends Player{
 
         this.myroom = myroom;
 
-        setSprite("player_launch", 3);
+        spriteWhite = "player_launch_white";
+        spriteBlack = "player_launch_black";
+        spriteFrames = 3;
+
+        setSprite(spriteBlack, spriteFrames);
         playerGravity = 0.5;
         playerFriction = 0.1;
 

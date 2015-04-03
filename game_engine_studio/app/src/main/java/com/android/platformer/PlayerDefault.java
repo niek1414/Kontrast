@@ -8,8 +8,11 @@ public class PlayerDefault extends Player{
     public PlayerDefault(Room myroom){
 
         this.myroom = myroom;
+        spriteWhite = "player_default_white";
+        spriteBlack = "player_default_black";
+        spriteFrames = 5;
 
-        setSprite("player_default", 5);
+        setSprite(spriteBlack, spriteFrames);
         playerGravity = 0.5;
         playerFriction = 0.1;
 

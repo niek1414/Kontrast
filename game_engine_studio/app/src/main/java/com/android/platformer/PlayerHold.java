@@ -17,7 +17,11 @@ public class PlayerHold extends Player{
 
         this.myroom = myroom;
 
-        setSprite("player_hold", 10);
+        spriteWhite = "player_hold_white";
+        spriteBlack = "player_hold_black";
+        spriteFrames = 10;
+
+        setSprite(spriteBlack, spriteFrames);
         playerGravity = 0.5;
         playerFriction = 0.1;
 

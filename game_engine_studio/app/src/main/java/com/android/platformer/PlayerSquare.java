@@ -14,7 +14,11 @@ public class PlayerSquare extends Player{
 
         this.myroom = myroom;
 
-        setSprite("block_black", 1);
+        spriteWhite = "block_white";
+        spriteBlack = "block_black";
+        spriteFrames = 1;
+
+        setSprite(spriteWhite, spriteFrames);
         playerGravity = 0.5;
 
         MAXXSPEED = 4;

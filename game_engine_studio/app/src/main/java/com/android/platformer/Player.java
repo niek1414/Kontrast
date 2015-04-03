@@ -36,6 +36,9 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected int THRESHOLD;
     protected int SENSITIVITY;
     protected float BOUNCEFRICTION;
+    protected String spriteWhite;
+    protected String spriteBlack;
+    protected int spriteFrames;
 
     protected boolean allowMovement = true;
 
@@ -65,10 +68,35 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected boolean placeFree(int x, int y){
         Tile myTile = getTileOnPosition(x, y);
         if (myTile != null) {
-            if (myTile.getTileType() == 0)
+            if (myTile.getTileType() == solidTile)
                 return false;
         }
         return true;
+    }
+
+    protected void inGrey(){
+        Tile myTile = getTileOnPosition(getX() + 4, getY() + 4);
+        if (myTile != null) {
+            if (myTile.getTileType() == 2) {
+                // remove grey tile
+                myTile.setTileType(solidTile);
+                // change player
+                if (playerType == Color.BLACK) {
+                    playerType = Color.WHITE;
+                    setSprite(spriteWhite, spriteFrames);
+                } else {
+                    playerType = Color.BLACK;
+                    setSprite(spriteBlack, spriteFrames);
+                }
+                // change solid Tile
+                if (solidTile == 0) {
+                    solidTile = 1;
+                } else {
+                    solidTile = 0;
+                }
+
+            }
+        }
     }
 
     protected void doBounce() {
@@ -114,6 +142,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
         limitSpeed();
 
         setPlayerAnimation();
+
+        inGrey();
 
 	}
 
@@ -213,7 +243,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // If not, we have to use a different iterator!
         // ^ what the heck do you even mean by that?
         for (TileCollision tc : collidedTiles) {
-            if (tc.theTile.getTileType() == 0) {
+            if (tc.theTile.getTileType() == solidTile) {
 
                 Log.d("Collision", "colliding " + tc.collisionSide);
 
