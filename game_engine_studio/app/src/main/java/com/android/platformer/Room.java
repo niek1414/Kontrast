@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 
+import java.lang.reflect.Array;
+
 public class Room extends GameEngine {
 
 
@@ -28,6 +30,9 @@ public class Room extends GameEngine {
     private long previousTimeMillis;
 
     public float roomPosition;
+
+    public int[] blackTiles;
+    public int[] whiteTiles;
 
 	@Override
 	protected void initialize() {
@@ -128,6 +133,8 @@ public class Room extends GameEngine {
 		String[] tileImagesNames = { "block_black", "block_white", "block_grey", "block_solid", "block_white", "block_black", "block_white", "block_black", "block_white", "block_black",};
                                     //black block    white block    grey block    solid block   player black   player white   trap black      trap white    moveTrap black  moveTrap white
                                     //0              1              2             3             4              5              6               7             8               9
+        blackTiles = new int[]{0,3,5,7,9};
+        whiteTiles = new int[]{1,3,4,6,8};
 
 		int[][] tilemap = {
                 {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
@@ -137,8 +144,8 @@ public class Room extends GameEngine {
                 {3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
                 {3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
                 {3,7,7,7,7,7,1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,3},
-                {3,0,0,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,1,0,6,1,1,1,1,1,1,1,1,1,1,1,3},
-                {3,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,9,0,1,1,0,1,1,1,1,1,1,1,1,1,3},
+                {3,0,0,0,0,0,1,1,1,0,0,1,1,1,1,1,1,0,1,0,6,1,1,1,1,1,1,1,1,1,1,1,3},
+                {3,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,1,0,9,0,1,1,0,1,1,1,1,1,1,1,1,1,3},
                 {3,0,0,0,0,0,0,0,0,0,0,1,1,6,6,6,6,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,3},
                 {3,0,0,0,0,0,0,0,1,1,1,1,6,0,0,0,0,0,0,0,6,1,1,1,0,0,1,0,2,2,2,0,3},
                 {3,0,0,0,1,0,0,0,1,1,1,1,6,0,0,0,0,0,0,0,1,1,1,6,1,1,6,0,0,0,0,0,3},
@@ -147,7 +154,7 @@ public class Room extends GameEngine {
                 {3,0,0,0,1,0,1,1,0,0,0,0,0,0,0,1,0,1,0,0,0,6,0,0,0,0,0,1,0,0,0,0,3},
                 {3,0,1,0,1,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,3},
                 {3,0,0,7,1,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,3},
-                {3,0,0,1,1,0,0,1,1,1,0,1,1,1,1,1,1,9,7,7,0,0,0,0,0,0,0,0,0,1,1,1,3},
+                {3,0,0,1,1,0,0,1,1,1,0,1,1,1,1,1,1,9,7,0,0,0,0,0,0,0,0,0,0,1,1,1,3},
                 {3,1,0,0,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,3},
                 {3,0,0,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,3},
                 {3,2,2,2,1,1,1,0,1,1,0,1,1,0,0,1,1,0,1,1,1,1,1,1,7,7,1,1,1,1,0,0,3},
@@ -171,6 +178,7 @@ public class Room extends GameEngine {
                 {3,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,3},
                 {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
 		};
+
         int tileSize = (12);
 		GameTiles myTiles = new GameTiles(tileImagesNames, tilemap, tileSize);
 		setTileMap(myTiles);
@@ -182,29 +190,35 @@ public class Room extends GameEngine {
                         player = new PlayerDefault(this, 0);
                         playerType = DEFAULT;
                         addGameObject(player, j*tileSize, i*tileSize);
+                        player.setCheckPoint();
                         useViewport(player);
                         break;
                     case 5: // player white
                         player = new PlayerDefault(this, 1);
                         playerType = DEFAULT;
                         addGameObject(player, j*tileSize, i*tileSize);
+                        player.setCheckPoint();
                         useViewport(player);
                         break;
                     case 6: // trap black
-                        Trap trapBlack = new Trap(0);
+                        Trap trapBlack = new Trap(this, 0);
                         addGameObject(trapBlack, j*tileSize, i*tileSize);
                         trapBlack.setAppearance();
                         break;
                     case 7: // trap white
-                        Trap trapWhite = new Trap(1);
+                        Trap trapWhite = new Trap(this, 1);
                         addGameObject(trapWhite, j*tileSize, i*tileSize);
                         trapWhite.setAppearance();
                         break;
                     case 8: // movable trap black
-
+                        MovableTrap movableTrapBlack = new MovableTrap(this, 0);
+                        addGameObject(movableTrapBlack, j*tileSize, i*tileSize);
+                        movableTrapBlack.setAppearance();
                         break;
                     case 9: // movable trap white
-
+                        MovableTrap movableTrapWhite = new MovableTrap(this, 1);
+                        addGameObject(movableTrapWhite, j*tileSize, i*tileSize);
+                        movableTrapWhite.setAppearance();
                         break;
                 }
             }

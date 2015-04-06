@@ -62,8 +62,9 @@ public class PlayerLaunch extends Player{
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = (-((((oldVal - TouchInput.yPos) * 0.5f)) / ((System.nanoTime() - startTime) / 100000000f))) * 0.09f;
                     setySpeed(jumpHeight);
-                    Log.e("HI", "Launch: " + jumpHeight);
-                    Log.e("HI", "LaunchTIME: " + (System.nanoTime() - startTime) / 100000000f);
+                    Log.d("LAUNCH", "Launch: " + jumpHeight);
+                    Log.d("LAUNCH", "LaunchTime: " + (System.nanoTime() - startTime) / 100000000f);
+                    Log.d("LAUNCH", "LaunchDistance: " + (oldVal - TouchInput.yPos) * 0.5f);
                     afterRelease = false;
                 }
             }

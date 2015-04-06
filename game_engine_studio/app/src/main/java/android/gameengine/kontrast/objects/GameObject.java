@@ -1,5 +1,6 @@
 package android.gameengine.kontrast.objects;
 
+import android.gameengine.kontrast.engine.GameEngine;
 import android.gameengine.kontrast.objects.graphics.AnimatedSprite;
 import android.graphics.Canvas;
 import android.graphics.Rect;

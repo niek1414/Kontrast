@@ -50,7 +50,7 @@ public class PlayerHold extends Player{
                     startTime = System.currentTimeMillis();
                     reset = false;
                     afterRelease = true;
-                    Log.e("HI", "RESETTTTTTTTTTTTTTTTT");
+                    Log.d("HOLD", "First Press");
                     allowMovement = false;
                     setxSpeed(0);
                 }
@@ -63,14 +63,12 @@ public class PlayerHold extends Player{
                 }
 
             } else if (afterRelease == true && TouchInput.onRelease){
-                Log.e("HI", "UUUUUUUUUUUUUUUUUUUUUUUUU");
+                Log.d("HOLD", "Release");
                 reset = true;
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = ((startTime - System.currentTimeMillis()) / 100);
                     setySpeed(jumpHeight);
-                    Log.e("HI", "Hold: " + jumpHeight);
-                    Log.e("HI", "S: " + startTime);
-                    Log.e("HI", "C: " + System.currentTimeMillis());
+                    Log.d("HOLD", "Hold: " + jumpHeight);
                 }
                 afterRelease = false;
                 allowMovement = true;

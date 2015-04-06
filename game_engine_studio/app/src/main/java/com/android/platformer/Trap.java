@@ -1,6 +1,7 @@
 package com.android.platformer;
 import android.gameengine.kontrast.objects.GameObject;
 import android.gameengine.kontrast.objects.MoveableGameObject;
+import android.gameengine.kontrast.engine.GameEngine;
 import android.gameengine.kontrast.objects.collisions.ICollision;
 import android.gameengine.kontrast.tiles.Tile;
 import android.util.Log;
@@ -13,15 +14,16 @@ import android.util.Log;
 public class Trap extends MoveableGameObject /*implements ICollision*/ {
 
     protected int trapColor; // 0 = black, 1 = white
+    protected Room myroom;
 
-    public Trap(int trapColor) {
+    public Trap(Room myroom, int trapColor) {
+        this.myroom = myroom;
         this.trapColor = trapColor;
     }
 
     @Override
     public void update() {
         super.update();
-
     }
 
     protected void setAppearance() {
@@ -48,23 +50,23 @@ public class Trap extends MoveableGameObject /*implements ICollision*/ {
                 getTileOnIndex(posX + 1, posY), // left
                 getTileOnIndex(posX - 1, posY)  // right
             } ;
-            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[0].getTileType());
-            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[1].getTileType());
-            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[2].getTileType());
-            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[3].getTileType());
+//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[0].getTileType());
+//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[1].getTileType());
+//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[2].getTileType());
+//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[3].getTileType());
 
 
             for (int i = 0; i < toCheck.length; i++) {
                 if (toCheck[i] != null){
                     if (trapColor == 1) {
                         if (toCheck[i].getTileType() == 3 || toCheck[i].getTileType() == 1) {
-                            Log.e("TRAPLOG", "Adjacent Tile Found!" + i);
+                            //Log.e("TRAPLOG", "Adjacent Tile Found!" + i);
                             setFrameNumber(i);
                             return; // might be considered ugly by some teachers... :D
                         }
                     } else if (trapColor == 0) {
                         if (toCheck[i].getTileType() == 3 || toCheck[i].getTileType() == 0) {
-                            Log.e("TRAPLOG", "Adjacent Tile Found!" + i);
+                            //Log.e("TRAPLOG", "Adjacent Tile Found!" + i);
                             setFrameNumber(i);
                             return; // might be considered ugly by some teachers... :D
                         }

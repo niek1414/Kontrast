@@ -37,6 +37,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected String spriteWhite;
     protected String spriteBlack;
     protected int spriteFrames;
+    protected static double spawnX;
+    protected static double spawnY;
 
     protected boolean allowMovement = true;
 
@@ -53,10 +55,28 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected boolean placeFree(int x, int y){
         Tile myTile = getTileOnPosition(x, y);
         if (myTile != null) {
-            if (myTile.getTileType() == solidTile || myTile.getTileType() == 3)
+            if(TileIsSolid(myTile)){
                 return false;
+            }
         }
         return true;
+    }
+
+    private boolean TileIsSolid(Tile targetTile) {
+        int[] currentColorArray;
+
+        if (playerType == Color.WHITE) {
+            currentColorArray = myroom.whiteTiles;
+        } else {
+            currentColorArray = myroom.blackTiles;
+        }
+
+        for (int i = 0; i < currentColorArray.length; i++) {
+            if (targetTile.getTileType() == currentColorArray[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void inGrey(){
@@ -83,6 +103,10 @@ public abstract class Player extends MoveableGameObject implements ICollision
                     solidTile = 0;
                 }
 
+                // set player checkpoint
+                setX(myTile.getTileX());
+                setY(myTile.getTileY());
+                setCheckPoint();
             }
         }
     }
@@ -124,6 +148,12 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    private void respawn() {
+        setSpeed(0);
+        setX(spawnX);
+        setY(spawnY);
+    }
+
     // handle collisions and movement
 	@Override
 	public void update()
@@ -134,51 +164,34 @@ public abstract class Player extends MoveableGameObject implements ICollision
         setY(Math.round(getY()));
         setX(Math.round(getX()));
 
-        //setySpeed(Math.round(getySpeed()));
-        //setxSpeed(Math.round(getxSpeed()));
-
         checkCollisions();
-
-		// Handle input. Both on screen buttons and tilting are supported.
-		// Buttons take precedence.
-		//boolean buttonPressed = false;
-
         checkGravity();
 
         checkMoveLeft();
         checkMoveRight();
 
-//        //ceiling collision
-//        if (getySpeed() < 0) {
-//            if (!placeFree(getX(), getY() - (int)getySpeed()) && !placeFree(getX() + getFrameWidth() - 1, getY() - (int)getySpeed())) {
-//                Log.d("Collision", "ceiling");
-//                setySpeed(0);
-//                setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
-//            }
-//        }
         limitSpeed();
-
         setPlayerAnimation();
 
         inGrey();
-
 	}
 
     protected void checkCollisions() {
         // collisions with objects
         ArrayList<GameObject> gebotst = getCollidedObjects();
         if (gebotst != null) {
-//			for (GameObject g : gebotst)
-//			{
-//				if (g instanceof Trap)
+			for (GameObject g : gebotst)
+			{
+				if (g instanceof Trap || g instanceof MovableTrap)
+				{
+                    respawn();
+					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
+                    //myroom.deleteGameObject(g);
+				} //else if (g instanceof SOMTING ALLLLESSSSSSSSSSSSSS)
 //				{
-//					Log.d("YOU FALL", "ON A TRAP WITH YOUR BUTT.");
-//                    myroom.deleteGameObject(g);
-//				} //else if (g instanceof SOMTING ALLLLESSSSSSSSSSSSSS)
-////				{
-////					// Log.d("Gepakt", "Ai, wat nu...");
-////				}
-//			}
+//					// Log.d("Gepakt", "Ai, wat nu...");
+//				}
+			}
         }
     }
 
@@ -194,7 +207,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = -8;
                     setySpeed(jumpHeight);
-                    Log.e("HI", "Default jump: " + jumpHeight);
+                    Log.d("PLAYER", "Default jump: " + jumpHeight);
                 }
             }
         }
@@ -260,7 +273,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // If not, we have to use a different iterator!
         // ^ what the heck do you even mean by that?
         for (TileCollision tc : collidedTiles) {
-            if (tc.theTile.getTileType() == solidTile || tc.theTile.getTileType() == 3) {
+            if (TileIsSolid(tc.theTile)) {
 
                 Log.d("Collision", "colliding " + tc.collisionSide);
 
@@ -301,6 +314,11 @@ public abstract class Player extends MoveableGameObject implements ICollision
 
     public int getSolidTile(){
         return solidTile;
+    }
+
+    public void setCheckPoint() {
+        spawnX = getX();
+        spawnY = getY();
     }
 }
 
