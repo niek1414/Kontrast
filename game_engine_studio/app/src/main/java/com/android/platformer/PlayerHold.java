@@ -13,15 +13,14 @@ public class PlayerHold extends Player{
     private long startTime;
     private boolean afterRelease;
 
-    public PlayerHold(Room myroom){
-
+    public PlayerHold(Room myroom, int solidTile){
         this.myroom = myroom;
 
         spriteWhite = "player_hold_white";
         spriteBlack = "player_hold_black";
         spriteFrames = 10;
 
-        setSprite(spriteBlack, spriteFrames);
+        setPlayerColor(solidTile);
         playerGravity = 0.5;
         playerFriction = 0.1;
 

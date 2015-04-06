@@ -5,14 +5,14 @@ package com.android.platformer;
  */
 public class PlayerDefault extends Player{
 
-    public PlayerDefault(Room myroom){
+    public PlayerDefault(Room myroom, int solidTile){
 
         this.myroom = myroom;
         spriteWhite = "player_default_white";
         spriteBlack = "player_default_black";
         spriteFrames = 5;
 
-        setSprite(spriteBlack, spriteFrames);
+        setPlayerColor(solidTile);
         playerGravity = 0.5;
         playerFriction = 0.1;
 

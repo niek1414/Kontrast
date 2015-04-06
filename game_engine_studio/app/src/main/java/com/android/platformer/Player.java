@@ -21,7 +21,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
     }
 
     private Color playerType = Color.BLACK;
-    private int solidTile = 0;
+    private int solidTile;
 
 	//Reference to the game itself
     protected Room myroom;
@@ -42,23 +42,10 @@ public abstract class Player extends MoveableGameObject implements ICollision
 
 
 //    Default constructor
-//    public Player(Room myroom)
-//    {
-//        this.myroom = myroom;
+//public Player(int solidTile)
+//{
 //
-//        setSprite("player_12", 5);
-//        playerGravity = 0.5;
-//        playerFriction = 0.1;
-//
-//        startAnimate();
-//        setAnimationSpeed(0);
-//
-//        MAXXSPEED = 8;
-//        MAXYSPEED = 8;
-//        THRESHOLD = 5;
-//        BOUNCEFRICTION = 1;
-//
-//    }
+//}
 
 
     // awesome home-made function that checks if a given position is collision free
@@ -298,6 +285,20 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 return; // might be considered ugly by some colleagues... // I love it
             }
         }
+    }
+    protected void setPlayerColor(int solidTile) {
+        this.solidTile = solidTile;
+        if (solidTile == 0) {
+            playerType = Color.BLACK;
+            setSprite(spriteBlack, spriteFrames);
+        } else {
+            playerType = Color.WHITE;
+            setSprite(spriteWhite, spriteFrames);
+        }
+    }
+
+    public int getSolidTile(){
+        return solidTile;
     }
 }
 

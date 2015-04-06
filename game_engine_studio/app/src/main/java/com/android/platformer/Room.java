@@ -13,10 +13,16 @@ import android.util.TypedValue;
 
 public class Room extends GameEngine {
 
-	//private Player player;
-    //private Player player2;
-    private Player player3;
-    //private Player player4;
+
+    private Player player;
+    private int playerType;
+    private final int DEFAULT = 0;
+    private final int HOLD = 1;
+    private final int LAUNCH = 2;
+    private final int SQUARE = 3;
+
+    private boolean switchTrigger = false;
+
 	private DashboardTextView scoreDisplay;
     private long roomTimer;
     private long previousTimeMillis;
@@ -35,28 +41,12 @@ public class Room extends GameEngine {
 
 		createTileEnvironment();
 
-		//player = new PlayerDefault(this);
-        //player2 = new PlayerLaunch(this);
-        player3 = new PlayerHold(this);
-        //player4 = new PlayerSquare(this);
-		//addGameObject(player, 84, 48);
-        //addGameObject(player2, 100, 68);
-        addGameObject(player3, 60, 68);
-        //addGameObject(player4, 40, 68);
-		
-		// Example of how to use the Viewport, properties and zooming
+        player = new PlayerDefault(this, 0);
+        playerType = DEFAULT;
 
-			// Switch it on
-			Viewport.useViewport = true;
-			// Zoom in, 2x
-			setZoomFactor(getScreenHeight() / 240);
-			// Make viewport follow the player
-			setPlayer(player3);
-			// player will not be center screen
-			setPlayerPositionOnScreen(Viewport.PLAYER_BOTTOM, Viewport.PLAYER_CENTER);
-			// Determines how quickly viewport moves (see API for details)
-			setPlayerPositionTolerance(0.8, 0.5);
+        addGameObject(player, 60, 68);
 
+        useViewport(player);
 		
 		// Example of how to add a Dashboard to a game
 		scoreDisplay = new DashboardTextView(this);
@@ -72,8 +62,56 @@ public class Room extends GameEngine {
 		
 		createDashboard();
 	}
-	
-	
+
+    private void switchPlayerControl(){
+        if (TouchInput.onPress && TouchInput.fingerCount == 2) {
+            switchTrigger = true;
+        } else if (switchTrigger && TouchInput.onRelease) {
+
+            int playerX = player.getX();
+            int playerY = player.getY();
+            int solidTile = player.getSolidTile();
+
+            deleteGameObject(player);
+
+            switch (playerType){
+                case DEFAULT:
+                    player = new PlayerHold(this, solidTile);
+                    playerType = HOLD;
+                    break;
+                case HOLD:
+                    player = new PlayerLaunch(this, solidTile);
+                    playerType = LAUNCH;
+                    break;
+                case LAUNCH:
+                    player = new PlayerSquare(this, solidTile);
+                    playerType = SQUARE;
+                    break;
+                case SQUARE:
+                    player = new PlayerDefault(this, solidTile);
+                    playerType = DEFAULT;
+                    break;
+                default: Log.e("ERROR", "SOMETHING WENT WRONG IN LINE 87 OF THE CLASS ROOM.JAVA");
+            }
+            addGameObject(player, playerX, playerY);
+            useViewport(player);
+            switchTrigger = false;
+        }
+    }
+
+    public void useViewport(Player follow) {
+        // Switch it on
+        Viewport.useViewport = true;
+        // Zoom in, 2x
+        setZoomFactor(getScreenHeight() / 240);
+        // Make viewport follow the player
+        setPlayer(follow);
+        // player will not be center screen
+        setPlayerPositionOnScreen(Viewport.PLAYER_BOTTOM, Viewport.PLAYER_CENTER);
+        // Determines how quickly viewport moves (see API for details)
+        setPlayerPositionTolerance(0.8, 0.5);
+    }
+
 	private void createDashboard(){
 		
 		//this.scoreDisplay.setWidgetWidth(20);
@@ -155,7 +193,8 @@ public class Room extends GameEngine {
 	public void update() {
 		super.update();
         roomTimer = (System.currentTimeMillis() - previousTimeMillis) / 1000;
-		this.scoreDisplay.setTextString(
-				"Time: " + String.valueOf(this.roomTimer));
+		this.scoreDisplay.setTextString("Time: " + String.valueOf(this.roomTimer));
+
+        switchPlayerControl();
 	}
 }

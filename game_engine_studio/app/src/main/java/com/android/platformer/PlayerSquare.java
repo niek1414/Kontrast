@@ -5,7 +5,7 @@ package com.android.platformer;
  */
 public class PlayerSquare extends Player{
 
-    public PlayerSquare(Room myroom){
+    public PlayerSquare(Room myroom, int solidTile){
 
         this.myroom = myroom;
 
@@ -13,7 +13,7 @@ public class PlayerSquare extends Player{
         spriteBlack = "block_black";
         spriteFrames = 1;
 
-        setSprite(spriteBlack, spriteFrames);
+        setPlayerColor(solidTile);
         playerGravity = 0.5;
 
         MAXXSPEED = 4;

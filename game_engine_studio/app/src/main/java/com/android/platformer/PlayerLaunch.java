@@ -13,7 +13,7 @@ public class PlayerLaunch extends Player{
     private long startTime;
     private boolean afterRelease;
 
-    public PlayerLaunch(Room myroom){
+    public PlayerLaunch(Room myroom, int solidTile){
 
         this.myroom = myroom;
 
@@ -21,7 +21,7 @@ public class PlayerLaunch extends Player{
         spriteBlack = "player_launch_black";
         spriteFrames = 3;
 
-        setSprite(spriteBlack, spriteFrames);
+        setPlayerColor(solidTile);
         playerGravity = 0.5;
         playerFriction = 0.1;
 
