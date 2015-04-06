@@ -104,9 +104,11 @@ public abstract class Player extends MoveableGameObject implements ICollision
 
     protected void flipTiles(Tile adjacentTiles[]){
         for (int i = 0; i < adjacentTiles.length; i++) {
-            if (adjacentTiles[i].getTileType() == 2) {
-                adjacentTiles[i].setTileType(solidTile);
-                flipTiles(getAdjacentTiles(adjacentTiles[i]));
+            if (adjacentTiles[i] != null) {
+                if (adjacentTiles[i].getTileType() == 2) {
+                    adjacentTiles[i].setTileType(solidTile);
+                    flipTiles(getAdjacentTiles(adjacentTiles[i]));
+                }
             }
         }
     }

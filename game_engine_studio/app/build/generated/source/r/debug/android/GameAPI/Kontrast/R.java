@@ -40,6 +40,8 @@ public final class R {
         public static final int shoulder1=0x7f02001a;
         public static final int shoulder2=0x7f02001b;
         public static final int start=0x7f02001c;
+        public static final int trap_black=0x7f02001d;
+        public static final int trap_white=0x7f02001e;
     }
     public static final class id {
         public static final int FPSButton=0x7f050008;
