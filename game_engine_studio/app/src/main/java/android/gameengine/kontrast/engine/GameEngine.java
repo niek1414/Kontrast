@@ -44,7 +44,7 @@ import android.widget.LinearLayout.LayoutParams;
  * 
  * @author Edward van Raak & Roel van Bergen & Leon van Kleef & Bas van der
  *         Zandt & Lex van der Laak
- * 
+ *
  * @version 0.9
  */
 public abstract class GameEngine extends Activity implements SensorEventListener {
@@ -502,6 +502,7 @@ public abstract class GameEngine extends Activity implements SensorEventListener
 			}
 		}
 	}
+
 
 	/**
 	 * <b>DO NOT CALL THIS METHOD</b>

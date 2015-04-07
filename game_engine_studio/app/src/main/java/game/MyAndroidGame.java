@@ -11,6 +11,7 @@
 package game;
 
 import com.android.platformer.Room;
+import com.android.platformer.Splash;
 
 import android.content.Intent;
 import android.gameengine.kontrast.engine.GameEngine;
@@ -23,7 +24,7 @@ protected void initialize() {
 	//put your initialization code here
 
 	Intent intent = new Intent(this, Room.class);
-	startActivity(intent);
+    startActivity(intent);
 }
 
 @Override

@@ -73,9 +73,6 @@ public class Trap extends MoveableGameObject /*implements ICollision*/ {
                     }
                 }
             }
-
         }
-
     }
-
 }

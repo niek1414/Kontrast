@@ -40,7 +40,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected static double spawnX;
     protected static double spawnY;
 
-    protected boolean allowMovement = true;
+    protected static boolean allowMovement = false;
 
 
 //    Default constructor
@@ -186,11 +186,15 @@ public abstract class Player extends MoveableGameObject implements ICollision
 				{
                     respawn();
 					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
-                    //myroom.deleteGameObject(g);
-				} //else if (g instanceof SOMTING ALLLLESSSSSSSSSSSSSS)
-//				{
-//					// Log.d("Gepakt", "Ai, wat nu...");
-//				}
+				} else if (g instanceof Portal) {
+                    if (((Portal) g).getIsGoal()){
+                        //level getLevelNumber() is done
+                        myroom.goToRoom(0);
+                    } else {
+                        myroom.goToRoom(((Portal) g).getLevelNumber());
+                    }
+                    deleteThisGameObject();
+                }
 			}
         }
     }
@@ -319,6 +323,10 @@ public abstract class Player extends MoveableGameObject implements ICollision
     public void setCheckPoint() {
         spawnX = getX();
         spawnY = getY();
+    }
+
+    public void setAllowMovement(boolean allowMovement){
+        this.allowMovement = allowMovement;
     }
 }
 
