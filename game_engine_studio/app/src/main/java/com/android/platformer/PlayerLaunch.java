@@ -51,7 +51,7 @@ public class PlayerLaunch extends Player{
             doBounce();
 
             if (TouchInput.onPress) {
-                if (reset == true){
+                if (allowMovement && reset == true){
                     oldVal = TouchInput.yPos;
                     startTime = System.nanoTime();
                     reset = false;

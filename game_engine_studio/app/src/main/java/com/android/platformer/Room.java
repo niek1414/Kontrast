@@ -8,11 +8,7 @@ import android.gameengine.kontrast.input.OnScreenButtons;
 import android.gameengine.kontrast.input.TouchInput;
 import android.gameengine.kontrast.tiles.GameTiles;
 import android.gameengine.kontrast.tiles.Tile;
-import android.graphics.Color;
 import android.util.Log;
-import android.util.TypedValue;
-
-import java.lang.reflect.Array;
 
 public class Room extends GameEngine {
 
@@ -36,13 +32,15 @@ public class Room extends GameEngine {
     public int[] blackTiles;
     public int[] whiteTiles;
 
-    private RoomData roomData;
+    private RoomData_1 roomData_1;
+    private RoomData_2 roomData_2;
 
 	@Override
 	protected void initialize() {
 
         Splash startSplash = new Splash(this);
         addGameObject(startSplash, 0, 0);
+        player.setAllowMovement(false);
 
         roomNumber = 0;
 
@@ -60,7 +58,7 @@ public class Room extends GameEngine {
     private void switchPlayerControl(){
         if (TouchInput.onPress && TouchInput.fingerCount == 2) {
             switchTrigger = true;
-        } else if (switchTrigger && TouchInput.onRelease) {
+        } else if (switchTrigger && TouchInput.onRelease && player.getAllowMovement() == true) {
 
             int playerX = player.getX();
             int playerY = player.getY();
@@ -143,7 +141,16 @@ public class Room extends GameEngine {
         whiteTiles = new int[]{1,3,4,6,8};
 
         // retrieve room data
-		int[][][] tilemap = roomData.getRoomData();
+        // retrieve room data
+        int[][][] tilemap;
+        int offset;
+        if (roomNumber <= 5) {
+            tilemap = roomData_1.getRoomData();
+            offset = 0;
+        } else {
+            tilemap = roomData_2.getRoomData();
+            offset = 5;
+        }
 
         // set tile size
         int tileSize = (12);

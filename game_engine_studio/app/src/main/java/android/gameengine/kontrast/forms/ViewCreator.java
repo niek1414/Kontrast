@@ -1,14 +1,14 @@
 package android.gameengine.kontrast.forms;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import android.gameengine.kontrast.engine.GameEngine;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * ViewCreator puts (form)views on top of the GameView. This views are made in

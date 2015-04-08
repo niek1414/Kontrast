@@ -1,13 +1,13 @@
 package android.gameengine.kontrast.objects;
 
-import java.util.ArrayList;
-
 import android.gameengine.kontrast.engine.GameEngine;
 import android.gameengine.kontrast.objects.collisions.CollidingObject;
-import android.gameengine.kontrast.objects.collisions.TileCollision;
 import android.gameengine.kontrast.objects.collisions.ICollision;
+import android.gameengine.kontrast.objects.collisions.TileCollision;
 import android.gameengine.kontrast.tiles.Tile;
 import android.graphics.Rect;
+
+import java.util.ArrayList;
 
 /**
  * MoveableGameObject represents a moveable object in the game. Make sure to add

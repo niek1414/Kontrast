@@ -1,5 +1,8 @@
 package android.gameengine.kontrast.persistence;
 
+import android.content.Context;
+import android.gameengine.kontrast.engine.GameEngine;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,9 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
-import android.content.Context;
-import android.gameengine.kontrast.engine.GameEngine;
 
 /**
  * Class for user persistence. With this Class you can save Strings in a File to

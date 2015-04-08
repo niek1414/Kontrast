@@ -1,11 +1,11 @@
 package android.gameengine.kontrast.objects.collisions;
 
-import java.util.List;
-import java.util.Vector;
-
 import android.gameengine.kontrast.objects.graphics.Sprite;
 import android.gameengine.kontrast.tiles.GameTiles;
 import android.gameengine.kontrast.tiles.Tile;
+
+import java.util.List;
+import java.util.Vector;
 
 /**
  * CollidingObject holds methods to calculate tile collisions. It's also the

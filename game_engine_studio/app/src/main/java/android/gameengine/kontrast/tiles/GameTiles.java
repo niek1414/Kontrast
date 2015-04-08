@@ -3,9 +3,10 @@
  */
 package android.gameengine.kontrast.tiles;
 
-import java.util.Vector;
 import android.gameengine.kontrast.objects.graphics.Sprite;
 import android.graphics.Canvas;
+
+import java.util.Vector;
 
 /**
  * 

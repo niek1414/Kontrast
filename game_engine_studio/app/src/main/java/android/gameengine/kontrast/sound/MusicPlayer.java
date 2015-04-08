@@ -1,10 +1,10 @@
 package android.gameengine.kontrast.sound;
 
-import java.util.HashSet;
-
 import android.gameengine.kontrast.engine.GameEngine;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+
+import java.util.HashSet;
 
 /**
  * This class features a number of static methods that can be used to add music

@@ -1,7 +1,6 @@
 package com.android.platformer;
 
 import android.gameengine.kontrast.objects.MoveableGameObject;
-import android.util.Log;
 
 /**
  * Created by NK on 7-4-2015.

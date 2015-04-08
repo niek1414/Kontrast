@@ -1,9 +1,9 @@
 package android.gameengine.kontrast.engine;
 
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.gameengine.kontrast.objects.GameObject;
 import android.gameengine.kontrast.objects.MoveableGameObject;
+import android.graphics.Point;
+import android.graphics.Rect;
 
 /**
  * The viewport follows a player object. <b> When you use the viewport, make

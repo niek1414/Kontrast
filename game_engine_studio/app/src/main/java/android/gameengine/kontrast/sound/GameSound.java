@@ -1,11 +1,12 @@
 package android.gameengine.kontrast.sound;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import android.content.Context;
 import android.gameengine.kontrast.engine.GameEngine;
 import android.media.AudioManager;
 import android.media.SoundPool;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class features a number of static methods that can be used to add sound

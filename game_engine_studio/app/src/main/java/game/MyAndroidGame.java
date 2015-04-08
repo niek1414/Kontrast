@@ -10,11 +10,10 @@
  */
 package game;
 
-import com.android.platformer.Room;
-import com.android.platformer.Splash;
-
 import android.content.Intent;
 import android.gameengine.kontrast.engine.GameEngine;
+
+import com.android.platformer.Room;
 
 
 public class MyAndroidGame extends GameEngine {

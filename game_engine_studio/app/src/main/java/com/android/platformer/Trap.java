@@ -1,10 +1,7 @@
 package com.android.platformer;
-import android.gameengine.kontrast.objects.GameObject;
+
 import android.gameengine.kontrast.objects.MoveableGameObject;
-import android.gameengine.kontrast.engine.GameEngine;
-import android.gameengine.kontrast.objects.collisions.ICollision;
 import android.gameengine.kontrast.tiles.Tile;
-import android.util.Log;
 
 /**
  * Created by NK on 6-4-2015

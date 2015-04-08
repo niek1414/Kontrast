@@ -1,8 +1,5 @@
 package com.android.platformer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.gameengine.kontrast.input.MotionSensor;
 import android.gameengine.kontrast.input.TouchInput;
 import android.gameengine.kontrast.objects.GameObject;
@@ -11,6 +8,9 @@ import android.gameengine.kontrast.objects.collisions.ICollision;
 import android.gameengine.kontrast.objects.collisions.TileCollision;
 import android.gameengine.kontrast.tiles.Tile;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class Player extends MoveableGameObject implements ICollision
@@ -214,7 +214,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         } else {
             doBounce();
             if (TouchInput.onPress) {
-                if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
+                if (allowMovement && placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = -8;
                     setySpeed(jumpHeight);
                     Log.d("PLAYER", "Default jump: " + jumpHeight);
@@ -332,14 +332,20 @@ public abstract class Player extends MoveableGameObject implements ICollision
         return solidTile;
     }
 
+    // set current player position as checkpoint
     public void setCheckPoint() {
         spawnX = getX();
         spawnY = getY();
     }
 
     // setter to allow movement
-    public void setAllowMovement(boolean allowMovement){
-        this.allowMovement = allowMovement;
+    public static void setAllowMovement(boolean allow){
+        allowMovement = allow;
+    }
+
+    // getter for allow movement
+    public static boolean getAllowMovement(){
+        return allowMovement;
     }
 }
 

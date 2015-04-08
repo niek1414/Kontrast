@@ -1,11 +1,11 @@
 package android.gameengine.kontrast.objects.graphics;
 
-import java.util.Vector;
-
 import android.gameengine.kontrast.engine.GameEngine;
 import android.gameengine.kontrast.engine.GameView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import java.util.Vector;
 
 /**
  * Sprite holds and handles correct loading of images (bitmaps), and includes

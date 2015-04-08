@@ -47,7 +47,7 @@ public class PlayerHold extends Player{
             doBounce();
 
             if (TouchInput.onPress) {
-                if (reset == true && getySpeed() == 0){
+                if (allowMovement && reset == true && getySpeed() == 0){
                     startTime = System.currentTimeMillis();
                     reset = false;
                     afterRelease = true;
