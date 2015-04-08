@@ -156,21 +156,21 @@ public class Room extends GameEngine {
         int tileSize = (12);
 
         // initialize tiles
-		GameTiles myTiles = new GameTiles(tileImagesNames, tilemap[roomNumber], tileSize);
+		GameTiles myTiles = new GameTiles(tileImagesNames, tilemap[roomNumber - offset], tileSize);
 		setTileMap(myTiles);
 
         // initialize game objects
-        for (int i = 0; i < tilemap[roomNumber].length; i++){
-            for (int j = 0; j < tilemap[roomNumber][i].length; j++){
+        for (int i = 0; i < tilemap[roomNumber - offset].length; i++){
+            for (int j = 0; j < tilemap[roomNumber - offset][i].length; j++){
 
-                if (tilemap[roomNumber][i][j] > 10 && tilemap[roomNumber][i][j] < 21) { // portals
-                    Portal levelPortal = new Portal(false, tilemap[roomNumber][i][j] - 10);
+                if (tilemap[roomNumber - offset][i][j] > 10 && tilemap[roomNumber - offset][i][j] < 21) { // portals
+                    Portal levelPortal = new Portal(false, tilemap[roomNumber - offset][i][j] - 10);
                     addGameObject(levelPortal, j * tileSize, i * tileSize);
-                } else if (tilemap[roomNumber][i][j] > 20 && tilemap[roomNumber][i][j] < 31) { // level sign
-                    Sign levelSign = new Sign(tilemap[roomNumber][i][j] - 20);
+                } else if (tilemap[roomNumber - offset][i][j] > 20 && tilemap[roomNumber - offset][i][j] < 31) { // level sign
+                    Sign levelSign = new Sign(tilemap[roomNumber - offset][i][j] - 20);
                     addGameObject(levelSign, j * tileSize, i * tileSize);
                 }
-                switch (tilemap[roomNumber][i][j]) {
+                switch (tilemap[roomNumber - offset][i][j]) {
                     case 4: // player black
                         player = new PlayerDefault(this, 0);
                         playerType = DEFAULT;

@@ -1,1 +1,1 @@
-C:\Users\Erwin\Documents\GitHub\Kontrast\game_engine_studio\app\build\intermediates\classes\debug
+C:\Users\NK\Documents\GitHub\Kontrast\game_engine_studio\app\build\intermediates\classes\debug
