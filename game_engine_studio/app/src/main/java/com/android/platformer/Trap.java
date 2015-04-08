@@ -26,6 +26,7 @@ public class Trap extends MoveableGameObject /*implements ICollision*/ {
         super.update();
     }
 
+    // set sprite and frame
     protected void setAppearance() {
         if (trapColor == 1) {
             setSprite("trap_white", 4);
@@ -35,6 +36,7 @@ public class Trap extends MoveableGameObject /*implements ICollision*/ {
         setDirectionFrame();
     }
 
+    //set the correct direction frame, dependant on adjacent tiles
     public void setDirectionFrame() {
         startAnimate();
         setAnimationSpeed(0);
@@ -50,11 +52,6 @@ public class Trap extends MoveableGameObject /*implements ICollision*/ {
                 getTileOnIndex(posX + 1, posY), // left
                 getTileOnIndex(posX - 1, posY)  // right
             } ;
-//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[0].getTileType());
-//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[1].getTileType());
-//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[2].getTileType());
-//            Log.e("TRAPLOG", "Adjacent Tile number: " + toCheck[3].getTileType());
-
 
             for (int i = 0; i < toCheck.length; i++) {
                 if (toCheck[i] != null){

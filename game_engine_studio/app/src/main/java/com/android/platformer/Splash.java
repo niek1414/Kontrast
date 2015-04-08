@@ -17,6 +17,7 @@ public class Splash extends GameObject{
         setSprite("splash_start");
     }
 
+    // function that removes the splash screen and allows player movement
     public void destroy(){
         ((Player)this.game.getPlayer()).setAllowMovement(true);
         deleteThisGameObject();

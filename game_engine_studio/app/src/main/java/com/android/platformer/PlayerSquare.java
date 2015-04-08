@@ -28,6 +28,7 @@ public class PlayerSquare extends Player{
         setAnimationSpeed(0);
     }
 
+    // overriding the bounce function because the SQUARE player does not bounce at all
     @Override
     protected void doBounce() {
         setySpeed(0);

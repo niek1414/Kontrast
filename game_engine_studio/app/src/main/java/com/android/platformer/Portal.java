@@ -14,6 +14,7 @@ public class Portal extends GameObject {
         this.isGoal = isGoal;
         setSprite("portal");
     }
+
     public boolean getIsGoal(){
         return isGoal;
     }

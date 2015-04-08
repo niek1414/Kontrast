@@ -36,6 +36,7 @@ public class PlayerHold extends Player{
         afterRelease = false;
     }
 
+    // the HOLD player has a different jump ability, overriding the gravity function
     @Override
     protected void checkGravity() {
         //set gravity

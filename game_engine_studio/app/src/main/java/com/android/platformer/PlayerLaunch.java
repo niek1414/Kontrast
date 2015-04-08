@@ -40,6 +40,7 @@ public class PlayerLaunch extends Player{
         afterRelease = false;
     }
 
+    // the LAUNCH player has a different jump ability, overriding the gravity function
     @Override
     protected void checkGravity() {
         //set gravity

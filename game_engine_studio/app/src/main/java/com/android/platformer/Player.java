@@ -16,17 +16,17 @@ import android.util.Log;
 public abstract class Player extends MoveableGameObject implements ICollision
 {
 
+    // enum for the player colour
     private enum Color{
         BLACK, WHITE
     }
-
-    private Color playerType = Color.BLACK;
-    private int solidTile;
 
 	//Reference to the game itself
     protected Room myroom;
 
 	// variables
+    private Color playerType = Color.BLACK;
+    private int solidTile;
     protected double playerGravity;
     protected double playerFriction;
     protected int MAXXSPEED;
@@ -39,125 +39,12 @@ public abstract class Player extends MoveableGameObject implements ICollision
     protected int spriteFrames;
     protected static double spawnX;
     protected static double spawnY;
-
     protected static boolean allowMovement = false;
 
-
-//    Default constructor
-//public Player(int solidTile)
-//{
-//
-//}
-
-
-    // awesome home-made function that checks if a given position is collision free
-    // TODO: make tile type dependant on the player!
-    protected boolean placeFree(int x, int y){
-        Tile myTile = getTileOnPosition(x, y);
-        if (myTile != null) {
-            if(TileIsSolid(myTile)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean TileIsSolid(Tile targetTile) {
-        int[] currentColorArray;
-
-        if (playerType == Color.WHITE) {
-            currentColorArray = myroom.whiteTiles;
-        } else {
-            currentColorArray = myroom.blackTiles;
-        }
-
-        for (int i = 0; i < currentColorArray.length; i++) {
-            if (targetTile.getTileType() == currentColorArray[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected void inGrey(){
-        Tile myTile = getTileOnPosition(getX() + (getFrameWidth() / 2), getY() + (getFrameHeight() / 2));
-        if (myTile != null) {
-            if (myTile.getTileType() == 2) {
-                // remove grey tile
-                Tile adjacentTiles[] = getAdjacentTiles(myTile);
-
-                flipTiles(adjacentTiles);
-
-                // change player
-                if (playerType == Color.BLACK) {
-                    playerType = Color.WHITE;
-                    setSprite(spriteWhite, spriteFrames);
-                } else {
-                    playerType = Color.BLACK;
-                    setSprite(spriteBlack, spriteFrames);
-                }
-                // change solid Tile
-                if (solidTile == 0) {
-                    solidTile = 1;
-                } else {
-                    solidTile = 0;
-                }
-
-                // set player checkpoint
-                setX(myTile.getTileX());
-                setY(myTile.getTileY());
-                setCheckPoint();
-            }
-        }
-    }
-
-    protected Tile[] getAdjacentTiles(Tile myTile){
-        Tile adjacentTiles[] = {
-                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() + 1),
-                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() + 1),
-                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() + 1),
-                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY()),
-                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY()),
-                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY()),
-                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() - 1),
-                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() - 1),
-                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() - 1)
-        };
-        return adjacentTiles;
-    }
-
-    protected void flipTiles(Tile adjacentTiles[]){
-        for (int i = 0; i < adjacentTiles.length; i++) {
-            if (adjacentTiles[i] != null) {
-                if (adjacentTiles[i].getTileType() == 2) {
-                    adjacentTiles[i].setTileType(solidTile);
-                    flipTiles(getAdjacentTiles(adjacentTiles[i]));
-                }
-            }
-        }
-    }
-
-    protected void doBounce() {
-        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && getySpeed() > 3){
-            setySpeed(-getySpeed() + BOUNCEFRICTION);
-            Log.d("Collision", "bounce");
-        } else {
-            //Log.d("Collision", "no bounce");
-            setySpeed(0);
-            setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
-        }
-    }
-
-    private void respawn() {
-        setSpeed(0);
-        setX(spawnX);
-        setY(spawnY);
-    }
-
-    // handle collisions and movement
-	@Override
-	public void update()
-	{
+    // update function
+    @Override
+    public void update()
+    {
         super.update();
 
         // round x and y position to prevent getting stuck occasionally
@@ -174,19 +61,138 @@ public abstract class Player extends MoveableGameObject implements ICollision
         setPlayerAnimation();
 
         inGrey();
-	}
+    }
 
+    // awesome home-made function that checks whether given position is collision free
+    protected boolean placeFree(int x, int y){
+        Tile myTile = getTileOnPosition(x, y);
+        if (myTile != null) {
+            if(TileIsSolid(myTile)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // check whether a given tile is solid to the player
+    private boolean TileIsSolid(Tile targetTile) {
+        // array containing tiles
+        int[] currentColorArray;
+
+        // assign the right coloured tiles to the array
+        if (playerType == Color.WHITE) {
+            currentColorArray = myroom.whiteTiles;
+        } else {
+            currentColorArray = myroom.blackTiles;
+        }
+
+        // loop through the tile array and return whether it is solid to the player
+        for (int i = 0; i < currentColorArray.length; i++) {
+            if (targetTile.getTileType() == currentColorArray[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // function that handles the player entering grey tiles
+    protected void inGrey(){
+        // assign collided tile to a variable
+        Tile myTile = getTileOnPosition(getX() + (getFrameWidth() / 2), getY() + (getFrameHeight() / 2));
+        if (myTile != null) {
+            if (myTile.getTileType() == 2) {
+                // remove grey tile
+                Tile adjacentTiles[] = getAdjacentTiles(myTile);
+
+                // flip the tiles to a black or white tile (dependant on player colour)
+                flipTiles(adjacentTiles);
+
+                // change player colour
+                if (playerType == Color.BLACK) {
+                    playerType = Color.WHITE;
+                    setSprite(spriteWhite, spriteFrames);
+                } else {
+                    playerType = Color.BLACK;
+                    setSprite(spriteBlack, spriteFrames);
+                }
+
+                // change solid tile value
+                if (solidTile == 0) {
+                    solidTile = 1;
+                } else {
+                    solidTile = 0;
+                }
+
+                // set new player checkpoint
+                setX(myTile.getTileX());
+                setY(myTile.getTileY());
+                setCheckPoint();
+            }
+        }
+    }
+
+    // function that finds tiles adjacent to the given tile
+    protected Tile[] getAdjacentTiles(Tile myTile){
+        Tile adjacentTiles[] = {
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() + 1),
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY()),
+                getTileOnIndex(myTile.getTileNumberX() + 1, myTile.getTileNumberY() - 1),
+                getTileOnIndex(myTile.getTileNumberX(), myTile.getTileNumberY() - 1),
+                getTileOnIndex(myTile.getTileNumberX() - 1, myTile.getTileNumberY() - 1)
+        };
+        return adjacentTiles;
+    }
+
+    // function that flips grey tiles into black or white tiles (dependant on the player)
+    protected void flipTiles(Tile adjacentTiles[]){
+        for (int i = 0; i < adjacentTiles.length; i++) {
+            if (adjacentTiles[i] != null) {
+                if (adjacentTiles[i].getTileType() == 2) {
+                    adjacentTiles[i].setTileType(solidTile);
+                    flipTiles(getAdjacentTiles(adjacentTiles[i]));
+                }
+            }
+        }
+    }
+
+    // function that handles bouncing
+    protected void doBounce() {
+        // bounce if the ySpeed is high enough
+        if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && getySpeed() > 3){
+            setySpeed(-getySpeed() + BOUNCEFRICTION);
+            Log.d("Collision", "bounce");
+        } else {
+            //Log.d("Collision", "no bounce");
+            setySpeed(0);
+            setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
+        }
+    }
+
+    // function that jumps the player back to it's checkpoint
+    private void respawn() {
+        setSpeed(0);
+        setX(spawnX);
+        setY(spawnY);
+    }
+
+    // function that handles collisions
     protected void checkCollisions() {
         // collisions with objects
         ArrayList<GameObject> gebotst = getCollidedObjects();
         if (gebotst != null) {
-			for (GameObject g : gebotst)
-			{
+			for (GameObject g : gebotst) {
+                // colliding with traps
 				if (g instanceof Trap || g instanceof MovableTrap)
 				{
                     respawn();
 					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
-				} else if (g instanceof Portal) {
+				}
+                // colliding with Portals
+                else if (g instanceof Portal) {
                     if (((Portal) g).getIsGoal()){
                         //level getLevelNumber() is done
                         myroom.goToRoom(0);
@@ -199,6 +205,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    // function that handles gravity and jumping
     protected void checkGravity() {
         //set gravity
         if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
@@ -206,7 +213,6 @@ public abstract class Player extends MoveableGameObject implements ICollision
             //Log.d("Gravity", "falling");
         } else {
             doBounce();
-
             if (TouchInput.onPress) {
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = -8;
@@ -217,18 +223,19 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    // handle moving left
     protected void checkMoveLeft() {
         // moving left
         if (placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1) && allowMovement) {
             if (MotionSensor.getPitch() < -THRESHOLD) {
                 setxSpeed(getxSpeed() + (MotionSensor.getPitch() + THRESHOLD) / SENSITIVITY);
             }
-
             // set horizontal friction
             setxSpeed((1 - playerFriction) * getxSpeed());
         }
     }
 
+    // handle moving right
     protected void checkMoveRight() {
         // moving right
         if (placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1) && allowMovement) {
@@ -241,6 +248,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    // limit maximum player speeds
     protected void limitSpeed() {
         // limit to max speed
         if (getxSpeed() >= MAXXSPEED) {
@@ -258,6 +266,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    // handle player animation
     protected void setPlayerAnimation() {
         //animations
         if (getX() != getPrevX()) {
@@ -269,13 +278,12 @@ public abstract class Player extends MoveableGameObject implements ICollision
     }
 
     // handle tile collisions
-    // TODO: make tile type dependant on the player!
 	@Override
 	public void collisionOccurred(List<TileCollision> collidedTiles) {
         // Do we know for certain that the for-each loop goes through the list
         // front to end?
         // If not, we have to use a different iterator!
-        // ^ what the heck do you even mean by that?
+        // ^ ????????????
         for (TileCollision tc : collidedTiles) {
             if (TileIsSolid(tc.theTile)) {
 
@@ -292,6 +300,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
                     if (Math.abs(getxSpeed()) < 4){
                         setxSpeed(0);
                     } else {
+                        // bouncing against walls
                         if (getxSpeed() > 4 && placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)) {
                             setxSpeed(-getxSpeed());
                         } else if (getxSpeed() < -4 && placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)) {
@@ -301,10 +310,12 @@ public abstract class Player extends MoveableGameObject implements ICollision
                         }
                     }
                 }
-                return; // might be considered ugly by some colleagues... // I love it
+                return; // might be considered ugly by some colleagues... // =D
             }
         }
     }
+
+    // setter for the player colour
     protected void setPlayerColor(int solidTile) {
         this.solidTile = solidTile;
         if (solidTile == 0) {
@@ -316,6 +327,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
+    // getter for the solid tile value
     public int getSolidTile(){
         return solidTile;
     }
@@ -325,14 +337,14 @@ public abstract class Player extends MoveableGameObject implements ICollision
         spawnY = getY();
     }
 
+    // setter to allow movement
     public void setAllowMovement(boolean allowMovement){
         this.allowMovement = allowMovement;
     }
 }
 
 
-
-/***** slope code - Cut short due to time constraints... *****/
+/***** slope code below - Cut short due to time constraints... *****/
 //    private void snapToSlope(GameObject slope){
 //        setySpeed(0);
 //
