@@ -84,6 +84,7 @@ public class Room extends GameEngine {
                     break;
                 default: Log.e("ERROR", "SOMETHING WENT WRONG IN LINE 87 OF THE CLASS ROOM.JAVA");
             }
+            ((Player)getPlayer()).setAllowMovement(true);
             addGameObject(player, playerX, playerY);
             useViewport(player);
             switchTrigger = false;

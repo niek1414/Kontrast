@@ -332,18 +332,27 @@ public abstract class Player extends MoveableGameObject implements ICollision
 
 
 
-
-// (taken out of update function)
-// Example of how to use the touch screen..
-// To use this, comment out the input from OnScreenButtons and MotionSensor
-// and switch the use-settings in class Room
-		/*
-		 	// get readings from the TouchInput
-		 	float targetX = TouchInput.xPos;
-		 	float targetY = TouchInput.xPos;
-		 	// When using the viewport, translate screen locations to game world
-		 	Point p = mygame.translateToGamePosition(targetX, targetY);
-		 	// Move in the direction of the point that has been touched
-			setSpeed(8);
-		 	moveTowardsAPoint(p.x, p.y);
-		*/
+/***** slope code - Cut short due to time constraints... *****/
+//    private void snapToSlope(GameObject slope){
+//        setySpeed(0);
+//
+//        int distanceX;
+//        int distanceY = slope.getY() - getY();
+//
+//        Log.d("SLOPE", "SNAPTEST");
+//        //if (distanceX >= 12){
+//            if (((Slope)slope).isLeft){
+//                distanceX = slope.getX() - getX();
+//                if(distanceX <= distanceY){
+//                    setY(getY() - getFrameHeight() - (distanceX - distanceY));
+//                    Log.d("SLOPE", "Links"+(distanceX - distanceY));
+//                }
+//            } else {
+//                distanceX = 12- (slope.getX() - getX() + getFrameWidth());
+//                if(distanceX <= distanceY){
+//                    setY(getY() - getFrameHeight() - (distanceX - distanceY));
+//                    Log.d("SLOPE", "Rechts"+(distanceX - distanceY));
+//                }
+//            }
+//        //}
+//    }

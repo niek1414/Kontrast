@@ -42,10 +42,11 @@ public final class R {
         public static final int shoulder1=0x7f02001c;
         public static final int shoulder2=0x7f02001d;
         public static final int sign=0x7f02001e;
-        public static final int splash_start=0x7f02001f;
-        public static final int start=0x7f020020;
-        public static final int trap_black=0x7f020021;
-        public static final int trap_white=0x7f020022;
+        public static final int slope_white=0x7f02001f;
+        public static final int splash_start=0x7f020020;
+        public static final int start=0x7f020021;
+        public static final int trap_black=0x7f020022;
+        public static final int trap_white=0x7f020023;
     }
     public static final class id {
         public static final int FPSButton=0x7f050008;
