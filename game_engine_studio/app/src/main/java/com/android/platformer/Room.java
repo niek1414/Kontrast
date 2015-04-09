@@ -134,6 +134,7 @@ public class Room extends GameEngine {
         deleteAllGameObjectsOfType(Tile.class);
         deleteAllGameObjectsOfType(Sign.class);
         deleteGameObject(player);
+        player.setAllowMovement(true);
     }
 
     // function that goes to the given room
