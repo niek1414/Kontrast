@@ -29,7 +29,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
 	// variables
     private Color playerType = Color.BLACK;
     private int solidTile;
-    protected GameSound gameSound = new GameSound();
+    protected boolean firstTimeDown = true;
     protected double playerGravity;
     protected double playerFriction;
     protected int MAXXSPEED;
@@ -132,8 +132,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 setCheckPoint();
 
                 //play sound
-                gameSound.stopSound(7);
-                gameSound.playSound(7, 0);
+                myroom.soundControl.gameSound.stopSound(7);
+                myroom.soundControl.gameSound.playSound(7, 0);
             }
         }
     }
@@ -173,14 +173,16 @@ public abstract class Player extends MoveableGameObject implements ICollision
             setySpeed(-getySpeed() + BOUNCEFRICTION);
 
             //play sound
-            gameSound.stopSound(5);
-            gameSound.playSound(5, 0);
+            myroom.soundControl.gameSound .stopSound(5);
+            myroom.soundControl.gameSound.playSound(5, 0);
             Log.d("Collision", "bounce");
         } else {
-
-            //play sound
-            myroom.gameSound.stopSound(4);
-            myroom.gameSound.playSound(4, 0);
+            if (firstTimeDown) {
+                //play sound
+                myroom.soundControl.gameSound.stopSound(4);
+                myroom.soundControl.gameSound.playSound(4, 0);
+                firstTimeDown = false;
+            }
 
             setySpeed(0);
             setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
@@ -203,8 +205,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 // colliding with traps
 				if (g instanceof Trap || g instanceof MovableTrap)
 				{
-                    gameSound.stopSound(6);
-                    gameSound.playSound(6, 0);
+                    myroom.soundControl.gameSound.stopSound(6);
+                    myroom.soundControl.gameSound.playSound(6, 0);
                     respawn();
 					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
 				}
@@ -212,8 +214,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 else if (g instanceof Portal) {
 
                     //play sound
-                    myroom.gameSound.stopSound(8);
-                    myroom.gameSound.playSound(8, 0);
+                    myroom.soundControl.gameSound.stopSound(8);
+                    myroom.soundControl.gameSound.playSound(8, 0);
 
                     if (((Portal) g).getIsGoal()){
 
@@ -233,6 +235,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
         //set gravity
         if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
+            firstTimeDown = true;
             //Log.d("Gravity", "falling");
         } else {
             doBounce();
@@ -321,6 +324,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
                     setySpeed(0);
                 } else if ((tc.collisionSide == tc.LEFT || tc.collisionSide == tc.RIGHT)) {
                     if (Math.abs(getxSpeed()) < 4){
+
                         setxSpeed(0);
                     } else {
                         // bouncing against walls
@@ -328,15 +332,15 @@ public abstract class Player extends MoveableGameObject implements ICollision
                             setxSpeed(-getxSpeed());
 
                             //play sound
-                            myroom.gameSound.stopSound(5);
-                            myroom.gameSound.playSound(5, 0);
+                            myroom.soundControl.gameSound.stopSound(5);
+                            myroom.soundControl.gameSound.playSound(5, 0);
 
                         } else if (getxSpeed() < -4 && placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)) {
                             setxSpeed(-getxSpeed());
 
                             //play sound
-                            myroom.gameSound.stopSound(5);
-                            myroom.gameSound.playSound(5, 0);
+                            myroom.soundControl.gameSound.stopSound(5);
+                            myroom.soundControl.gameSound.playSound(5, 0);
 
                         } else {
                             setxSpeed(0);

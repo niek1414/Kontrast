@@ -46,6 +46,7 @@ public class PlayerLaunch extends Player{
         //set gravity
         if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
+            firstTimeDown = true;
             //Log.d("Gravity", "falling");
         } else {
             doBounce();
@@ -69,8 +70,8 @@ public class PlayerLaunch extends Player{
                     afterRelease = false;
 
                     //play sound
-                    myroom.gameSound.stopSound(3);
-                    myroom.gameSound.playSound(3, 0);
+                    myroom.soundControl.gameSound.stopSound(3);
+                    myroom.soundControl.gameSound.playSound(3, 0);
                 }
             }
         }

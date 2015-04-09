@@ -34,8 +34,11 @@ public class PlayerSquare extends Player{
         setySpeed(0);
         setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
 
-        //play sound
-        myroom.gameSound.stopSound(4);
-        myroom.gameSound.playSound(4, 0);
+        if (firstTimeDown) {
+            //play sound
+            myroom.soundControl.gameSound.stopSound(4);
+            myroom.soundControl.gameSound.playSound(4, 0);
+            firstTimeDown = false;
+        }
     }
 }

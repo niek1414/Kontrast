@@ -38,7 +38,7 @@ public class Room extends GameEngine {
     private RoomData_2 roomData_2;
 
     private MusicPlayer musicPlayer;
-    public GameSound gameSound;
+    public SoundControl soundControl;
 
     private String[] ambientSound = {
             "startup_ambience",
@@ -57,6 +57,8 @@ public class Room extends GameEngine {
 
 	@Override
 	protected void initialize() {
+        soundControl = new SoundControl(this);
+        soundControl.initializeSound();
 
         Splash startSplash = new Splash(this);
         addGameObject(startSplash, 0, 0);
@@ -74,28 +76,7 @@ public class Room extends GameEngine {
         createRoomEnvironment();
 	}
 
-    private void initializeSound(){
-        //add sounds
-            //player
-            gameSound.addSound(0, "jump_single");
-            gameSound.addSound(1, "hold_single");
-            gameSound.addSound(2, "release_single");
-            gameSound.addSound(3, "launch_single");
 
-            gameSound.addSound(4, "land_single");
-            gameSound.addSound(5, "bounce_single");
-
-            gameSound.addSound(6, "respawn_single");
-            gameSound.addSound(7, "checkpoint_single");
-            gameSound.addSound(8, "next_lvl_single");
-
-            //splash
-            gameSound.addSound(9, "sheet_single");
-
-            //change player
-            gameSound.addSound(10, "change_ball_single");
-
-    }
 
     // handle switching player types
     private void switchPlayerControl(){
@@ -104,8 +85,8 @@ public class Room extends GameEngine {
         } else if (switchTrigger && TouchInput.onRelease && player.getAllowMovement() == true) {
 
             // play sound
-            gameSound.stopSound(10);
-            gameSound.playSound(10, 0);
+            soundControl.gameSound.stopSound(10);
+            soundControl.gameSound.playSound(10, 0);
 
             int playerX = player.getX();
             int playerY = player.getY();

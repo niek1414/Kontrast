@@ -42,6 +42,7 @@ public class PlayerHold extends Player{
         //set gravity
         if (placeFree(getX(), getY() + getFrameHeight()) && placeFree(getX() + getFrameWidth() - 1, getY() + getFrameHeight())) {
             setySpeed(getySpeed() + playerGravity);
+            firstTimeDown = true;
             //Log.d("Gravity", "falling");
         } else {
             doBounce();
@@ -56,8 +57,8 @@ public class PlayerHold extends Player{
                     setxSpeed(0);
 
                     //play sound
-                    myroom.gameSound.stopSound(1);
-                    myroom.gameSound.playSound(1, 0);
+                    myroom.soundControl.gameSound.stopSound(1);
+                    myroom.soundControl.gameSound.playSound(1, 0);
                 }
                 if (afterRelease == true){
                     int scale = (int) (-((startTime - System.currentTimeMillis()) / 100));
@@ -72,9 +73,9 @@ public class PlayerHold extends Player{
                 reset = true;
 
                 //play sound
-                myroom.gameSound.stopSound(1);
-                myroom.gameSound.stopSound(2);
-                myroom.gameSound.playSound(2, 0);
+                myroom.soundControl.gameSound.stopSound(1);
+                myroom.soundControl.gameSound.stopSound(2);
+                myroom.soundControl.gameSound.playSound(2, 0);
 
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = ((startTime - System.currentTimeMillis()) / 100);

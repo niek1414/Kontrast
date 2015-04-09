@@ -35,8 +35,8 @@ public class Splash extends GameObject{
             hasTapped = false;
 
             // play sound
-            game.gameSound.stopSound(9);
-            game.gameSound.playSound(9, 0);
+            game.soundControl.gameSound.stopSound(9);
+            game.soundControl.gameSound.playSound(9, 0);
 
             if (sheet == 0){
                 sheet = 1;
