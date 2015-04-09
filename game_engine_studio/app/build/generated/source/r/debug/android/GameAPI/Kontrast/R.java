@@ -93,14 +93,22 @@ public final class R {
     }
     public static final class raw {
         public static final int bounce_single=0x7f040000;
-        public static final int checkpoint_single=0x7f040001;
-        public static final int level_1_ambience=0x7f040002;
-        public static final int level_2_ambience=0x7f040003;
-        public static final int level_3_ambience=0x7f040004;
-        public static final int level_4_ambience=0x7f040005;
-        public static final int level_5_ambience=0x7f040006;
-        public static final int respawn_single=0x7f040007;
-        public static final int startup_ambience=0x7f040008;
+        public static final int change_ball_single=0x7f040001;
+        public static final int checkpoint_single=0x7f040002;
+        public static final int hold_single=0x7f040003;
+        public static final int jump_single=0x7f040004;
+        public static final int land_single=0x7f040005;
+        public static final int launch_single=0x7f040006;
+        public static final int level_1_ambience=0x7f040007;
+        public static final int level_2_ambience=0x7f040008;
+        public static final int level_3_ambience=0x7f040009;
+        public static final int level_4_ambience=0x7f04000a;
+        public static final int level_5_ambience=0x7f04000b;
+        public static final int next_lvl_single=0x7f04000c;
+        public static final int release_single=0x7f04000d;
+        public static final int respawn_single=0x7f04000e;
+        public static final int sheet_single=0x7f04000f;
+        public static final int startup_ambience=0x7f040010;
     }
     public static final class string {
         public static final int action_settings=0x7f050000;

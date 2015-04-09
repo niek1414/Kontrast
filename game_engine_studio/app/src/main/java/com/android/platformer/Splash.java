@@ -33,6 +33,11 @@ public class Splash extends GameObject{
         }
         if (TouchInput.onRelease && hasTapped){
             hasTapped = false;
+
+            // play sound
+            game.gameSound.stopSound(9);
+            game.gameSound.playSound(9, 0);
+
             if (sheet == 0){
                 sheet = 1;
                 setSprite("splash_tut");

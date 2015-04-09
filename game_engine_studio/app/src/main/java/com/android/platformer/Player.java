@@ -132,8 +132,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 setCheckPoint();
 
                 //play sound
-                gameSound.stopSound(2);
-                gameSound.playSound(2, 0);
+                gameSound.stopSound(7);
+                gameSound.playSound(7, 0);
             }
         }
     }
@@ -171,11 +171,17 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // bounce if the ySpeed is high enough
         if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && getySpeed() > 3){
             setySpeed(-getySpeed() + BOUNCEFRICTION);
-            gameSound.stopSound(0);
-            gameSound.playSound(0, 0);
+
+            //play sound
+            gameSound.stopSound(5);
+            gameSound.playSound(5, 0);
             Log.d("Collision", "bounce");
         } else {
-            //Log.d("Collision", "no bounce");
+
+            //play sound
+            myroom.gameSound.stopSound(4);
+            myroom.gameSound.playSound(4, 0);
+
             setySpeed(0);
             setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
         }
@@ -197,14 +203,20 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 // colliding with traps
 				if (g instanceof Trap || g instanceof MovableTrap)
 				{
-                    gameSound.stopSound(1);
-                    gameSound.playSound(1, 0);
+                    gameSound.stopSound(6);
+                    gameSound.playSound(6, 0);
                     respawn();
 					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
 				}
                 // colliding with Portals
                 else if (g instanceof Portal) {
+
+                    //play sound
+                    myroom.gameSound.stopSound(8);
+                    myroom.gameSound.playSound(8, 0);
+
                     if (((Portal) g).getIsGoal()){
+
                         //level getLevelNumber() is done
                         myroom.goToRoom(0);
                     } else {
@@ -314,8 +326,18 @@ public abstract class Player extends MoveableGameObject implements ICollision
                         // bouncing against walls
                         if (getxSpeed() > 4 && placeFree(getX() - 1, getY()) && placeFree(getX() - 1, getY() + getFrameHeight() - 1)) {
                             setxSpeed(-getxSpeed());
+
+                            //play sound
+                            myroom.gameSound.stopSound(5);
+                            myroom.gameSound.playSound(5, 0);
+
                         } else if (getxSpeed() < -4 && placeFree(getX() + getFrameWidth() + 1, getY()) && placeFree(getX() + getFrameWidth() + 1, getY() + getFrameHeight() - 1)) {
                             setxSpeed(-getxSpeed());
+
+                            //play sound
+                            myroom.gameSound.stopSound(5);
+                            myroom.gameSound.playSound(5, 0);
+
                         } else {
                             setxSpeed(0);
                         }

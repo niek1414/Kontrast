@@ -34,11 +34,6 @@ public class PlayerHold extends Player{
         oldVal = 0f;
         startTime = System.currentTimeMillis();
         afterRelease = false;
-
-        //add sounds
-        gameSound.addSound(0, "bounce_single");
-        gameSound.addSound(1, "respawn_single");
-        gameSound.addSound(2, "checkpoint_single");
     }
 
     // the HOLD player has a different jump ability, overriding the gravity function
@@ -59,6 +54,10 @@ public class PlayerHold extends Player{
                     Log.d("HOLD", "First Press");
                     allowMovement = false;
                     setxSpeed(0);
+
+                    //play sound
+                    myroom.gameSound.stopSound(1);
+                    myroom.gameSound.playSound(1, 0);
                 }
                 if (afterRelease == true){
                     int scale = (int) (-((startTime - System.currentTimeMillis()) / 100));
@@ -71,6 +70,12 @@ public class PlayerHold extends Player{
             } else if (afterRelease == true && TouchInput.onRelease){
                 Log.d("HOLD", "Release");
                 reset = true;
+
+                //play sound
+                myroom.gameSound.stopSound(1);
+                myroom.gameSound.stopSound(2);
+                myroom.gameSound.playSound(2, 0);
+
                 if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = ((startTime - System.currentTimeMillis()) / 100);
                     setySpeed(jumpHeight);

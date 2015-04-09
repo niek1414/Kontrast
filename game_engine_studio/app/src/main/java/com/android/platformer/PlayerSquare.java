@@ -26,11 +26,6 @@ public class PlayerSquare extends Player{
 
         startAnimate();
         setAnimationSpeed(0);
-
-        //add sounds
-        gameSound.addSound(0, "bounce_single");
-        gameSound.addSound(1, "respawn_single");
-        gameSound.addSound(2, "checkpoint_single");
     }
 
     // overriding the bounce function because the SQUARE player does not bounce at all
@@ -38,5 +33,9 @@ public class PlayerSquare extends Player{
     protected void doBounce() {
         setySpeed(0);
         setY(getY() / getFrameHeight() * getFrameHeight()); // snap Y to prevent getting stuck
+
+        //play sound
+        myroom.gameSound.stopSound(4);
+        myroom.gameSound.playSound(4, 0);
     }
 }
