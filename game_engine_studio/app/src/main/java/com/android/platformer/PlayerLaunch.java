@@ -38,6 +38,11 @@ public class PlayerLaunch extends Player{
         oldVal = 0f;
         startTime = System.nanoTime();
         afterRelease = false;
+
+        //add sounds
+        gameSound.addSound(0, "bounce_single");
+        gameSound.addSound(1, "respawn_single");
+        gameSound.addSound(2, "checkpoint_single");
     }
 
     // the LAUNCH player has a different jump ability, overriding the gravity function
