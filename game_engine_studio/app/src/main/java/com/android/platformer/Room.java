@@ -78,6 +78,12 @@ public class Room extends GameEngine {
 
 
 
+    private void resetToMainRoom(){
+        if (TouchInput.onPress && TouchInput.fingerCount == 4 && roomNumber != 0) {
+            goToRoom(0);
+        }
+    }
+
     // handle switching player types
     private void switchPlayerControl(){
         if (TouchInput.onPress && TouchInput.fingerCount == 2) {
@@ -123,9 +129,11 @@ public class Room extends GameEngine {
     // function that clears the room of all it's objects
     private void destroyRoom(){
         deleteAllGameObjectsOfType(Trap.class);
+        deleteAllGameObjectsOfType(MovableTrap.class);
         deleteAllGameObjectsOfType(Portal.class);
         deleteAllGameObjectsOfType(Tile.class);
         deleteAllGameObjectsOfType(Sign.class);
+        deleteGameObject(player);
     }
 
     // function that goes to the given room
@@ -258,6 +266,7 @@ public class Room extends GameEngine {
 		super.update();
         //score == roomTimer = (System.currentTimeMillis() - previousTimeMillis) / 1000;
         switchPlayerControl();
+        resetToMainRoom();
 	}
 
 }

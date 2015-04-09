@@ -243,6 +243,11 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 if (allowMovement && placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1)) {
                     float jumpHeight = -8;
                     setySpeed(jumpHeight);
+
+                    //play sound
+                    myroom.soundControl.gameSound.stopSound(0);
+                    myroom.soundControl.gameSound.playSound(0, 0);
+
                     Log.d("PLAYER", "Default jump: " + jumpHeight);
                 }
             }
