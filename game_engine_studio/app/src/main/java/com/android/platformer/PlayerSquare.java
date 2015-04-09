@@ -26,6 +26,11 @@ public class PlayerSquare extends Player{
 
         startAnimate();
         setAnimationSpeed(0);
+
+        //add sounds
+        gameSound.addSound(0, "bounce_single");
+        gameSound.addSound(1, "respawn_single");
+        gameSound.addSound(2, "checkpoint_single");
     }
 
     // overriding the bounce function because the SQUARE player does not bounce at all

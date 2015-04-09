@@ -34,6 +34,11 @@ public class PlayerHold extends Player{
         oldVal = 0f;
         startTime = System.currentTimeMillis();
         afterRelease = false;
+
+        //add sounds
+        gameSound.addSound(0, "bounce_single");
+        gameSound.addSound(1, "respawn_single");
+        gameSound.addSound(2, "checkpoint_single");
     }
 
     // the HOLD player has a different jump ability, overriding the gravity function

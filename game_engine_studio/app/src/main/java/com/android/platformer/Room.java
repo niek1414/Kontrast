@@ -8,6 +8,7 @@ import android.gameengine.kontrast.input.OnScreenButtons;
 import android.gameengine.kontrast.input.TouchInput;
 import android.gameengine.kontrast.tiles.GameTiles;
 import android.gameengine.kontrast.tiles.Tile;
+import android.gameengine.kontrast.sound.MusicPlayer;
 import android.util.Log;
 
 public class Room extends GameEngine {
@@ -34,6 +35,22 @@ public class Room extends GameEngine {
 
     private RoomData_1 roomData_1;
     private RoomData_2 roomData_2;
+
+    private MusicPlayer musicPlayer;
+    private String[] ambientSound = {
+            "startup_ambience",
+            "level_1_ambience",
+            "level_2_ambience",
+            "level_3_ambience",
+            "level_4_ambience",
+            "level_5_ambience",
+            "level_4_ambience",
+            "level_4_ambience",
+            "level_4_ambience",
+            "level_4_ambience",
+            "level_4_ambience"
+    };
+
 
 	@Override
 	protected void initialize() {
@@ -212,6 +229,10 @@ public class Room extends GameEngine {
                 }
             }
         }
+        //set ambient sound
+        musicPlayer.stop();
+        musicPlayer.play(ambientSound[roomNumber], true);
+
 		Log.d("ROOM", "GameTiles and objects created");
 	}
 

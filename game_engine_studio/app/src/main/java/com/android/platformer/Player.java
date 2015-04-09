@@ -1,11 +1,13 @@
 package com.android.platformer;
 
+import android.gameengine.kontrast.engine.GameEngine;
 import android.gameengine.kontrast.input.MotionSensor;
 import android.gameengine.kontrast.input.TouchInput;
 import android.gameengine.kontrast.objects.GameObject;
 import android.gameengine.kontrast.objects.MoveableGameObject;
 import android.gameengine.kontrast.objects.collisions.ICollision;
 import android.gameengine.kontrast.objects.collisions.TileCollision;
+import android.gameengine.kontrast.sound.GameSound;
 import android.gameengine.kontrast.tiles.Tile;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ public abstract class Player extends MoveableGameObject implements ICollision
 	// variables
     private Color playerType = Color.BLACK;
     private int solidTile;
+    protected GameSound gameSound = new GameSound();
     protected double playerGravity;
     protected double playerFriction;
     protected int MAXXSPEED;
@@ -127,6 +130,10 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 setX(myTile.getTileX());
                 setY(myTile.getTileY());
                 setCheckPoint();
+
+                //play sound
+                gameSound.stopSound(2);
+                gameSound.playSound(2, 0);
             }
         }
     }
@@ -164,6 +171,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
         // bounce if the ySpeed is high enough
         if (placeFree(getX(), getY() - 1) && placeFree(getX() + getFrameWidth() - 1, getY() - 1) && getySpeed() > 3){
             setySpeed(-getySpeed() + BOUNCEFRICTION);
+            gameSound.stopSound(0);
+            gameSound.playSound(0, 0);
             Log.d("Collision", "bounce");
         } else {
             //Log.d("Collision", "no bounce");
@@ -188,6 +197,8 @@ public abstract class Player extends MoveableGameObject implements ICollision
                 // colliding with traps
 				if (g instanceof Trap || g instanceof MovableTrap)
 				{
+                    gameSound.stopSound(1);
+                    gameSound.playSound(1, 0);
                     respawn();
 					Log.d("GAME", "YOU FALL ON A TRAP WITH YOUR BUTT.");
 				}
