@@ -137,13 +137,20 @@ public class Room extends GameEngine {
         ((Player)getPlayer()).setAllowMovement(true);
     }
 
-    // function that goes to the given room
+    /**
+     * function that goes to the given room
+     * @param roomNumber
+     */
     public void goToRoom(int roomNumber){
         this.roomNumber = roomNumber;
         destroyRoom();
         createRoomEnvironment();
     }
 
+    /**
+     * Enable the use of viewport
+     * @param follow
+     */
     public void useViewport(Player follow) {
         // Switch it on
         Viewport.useViewport = true;
@@ -157,9 +164,7 @@ public class Room extends GameEngine {
         setPlayerPositionTolerance(0.8, 0.5);
     }
 
-	/**
-	 * Create background with tiles
-	 */
+	// Create background with tiles
 	private void createRoomEnvironment() {
 		String[] tileImagesNames = { "block_black", "block_white", "block_grey", "block_solid", "block_white", "block_black", "block_white", "block_black", "block_white", "block_black",  "portal",
                                     //black block    white block    grey block    solid block   player black   player white   trap black      trap white    moveTrap black  moveTrap white finish portal

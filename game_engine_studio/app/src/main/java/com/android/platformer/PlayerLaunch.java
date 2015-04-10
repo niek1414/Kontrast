@@ -13,6 +13,11 @@ public class PlayerLaunch extends Player{
     private long startTime;
     private boolean afterRelease;
 
+    /**
+     * Initializes launch player
+     * @param myroom
+     * @param solidTile
+     */
     public PlayerLaunch(Room myroom, int solidTile){
 
         this.myroom = myroom;

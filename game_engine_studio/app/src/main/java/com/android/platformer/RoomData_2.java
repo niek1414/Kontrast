@@ -259,6 +259,9 @@ public class RoomData_2 {
             }
     };
 
+    /**
+     * @return roomData
+     */
     public static int[][][] getRoomData(){
         return roomData;
     }

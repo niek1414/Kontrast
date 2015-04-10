@@ -7,6 +7,11 @@ package com.android.platformer;
 public class MovableTrap extends Trap{
     private boolean isFalling;
 
+    /**
+     * Initializes movable trap
+     * @param myroom
+     * @param trapColor
+     */
     public MovableTrap (Room myroom, int trapColor) {
         super(myroom,trapColor);
         isFalling = false;

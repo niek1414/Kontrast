@@ -13,6 +13,11 @@ public class PlayerHold extends Player{
     private long startTime;
     private boolean afterRelease;
 
+    /**
+     * Initializes donut player
+     * @param myroom
+     * @param solidTile
+     */
     public PlayerHold(Room myroom, int solidTile){
         this.myroom = myroom;
 

@@ -8,6 +8,10 @@ import android.gameengine.kontrast.objects.MoveableGameObject;
 public class Sign extends MoveableGameObject{
     private int levelNumber;
 
+    /**
+     * Initialize sign
+     * @param levelNumber
+     */
     public Sign(int levelNumber){
         this.levelNumber = levelNumber;
         setSprite("sign", 10);

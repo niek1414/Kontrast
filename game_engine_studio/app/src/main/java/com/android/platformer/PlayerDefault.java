@@ -4,7 +4,11 @@ package com.android.platformer;
  * Created by NK on 31-3-2015.
  */
 public class PlayerDefault extends Player{
-
+    /**
+     * Initializes default player
+     * @param myroom
+     * @param solidTile
+     */
     public PlayerDefault(Room myroom, int solidTile){
 
         this.myroom = myroom;

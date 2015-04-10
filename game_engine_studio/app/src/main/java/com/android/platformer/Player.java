@@ -369,23 +369,34 @@ public abstract class Player extends MoveableGameObject implements ICollision
         }
     }
 
-    // getter for the solid tile value
+    /**
+     * getter for the solid tile value
+     * @return solidTile
+     */
     public int getSolidTile(){
         return solidTile;
     }
 
-    // set current player position as checkpoint
+    /**
+     * set current player position as checkpoint
+     */
     public void setCheckPoint() {
         spawnX = getX();
         spawnY = getY();
     }
 
-    // setter to allow movement
+    /**
+     * setter to allow movement
+     * @param allow
+     */
     public static void setAllowMovement(boolean allow){
         allowMovement = allow;
     }
 
-    // getter for allow movement
+    /**
+     * getter for allow movement
+     * @return allowMovement
+     */
     public static boolean getAllowMovement(){
         return allowMovement;
     }

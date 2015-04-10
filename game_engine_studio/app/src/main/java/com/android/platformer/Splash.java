@@ -12,6 +12,10 @@ public class Splash extends GameObject{
     private int sheet;
     private boolean hasTapped;
 
+    /**
+     * Initialize splash screen
+     * @param game
+     */
     public Splash(Room game){
         this.game = game;
         sheet = 0;
@@ -19,7 +23,9 @@ public class Splash extends GameObject{
         setSprite("splash_start");
     }
 
-    // function that removes the splash screen and allows player movement
+    /**
+     * function that removes the splash screen and allows player movement
+     */
     public void destroy(){
         ((Player)this.game.getPlayer()).setAllowMovement(true);
         deleteThisGameObject();

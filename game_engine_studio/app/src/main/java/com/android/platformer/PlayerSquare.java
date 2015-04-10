@@ -4,7 +4,11 @@ package com.android.platformer;
  * Created by NK on 31-3-2015.
  */
 public class PlayerSquare extends Player{
-
+    /**
+     * Initializes square player
+     * @param myroom
+     * @param solidTile
+     */
     public PlayerSquare(Room myroom, int solidTile){
 
         this.myroom = myroom;

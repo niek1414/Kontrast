@@ -11,10 +11,17 @@ public class SoundControl {
     public GameSound gameSound = new GameSound();
     private Room game;
 
+    /**
+     * Initializes sound control
+     * @param game
+     */
     public SoundControl(Room game){
         this.game = game;
     }
 
+    /**
+     * Initialize sounds
+     */
     public void initializeSound(){
         //add sounds
         //player
